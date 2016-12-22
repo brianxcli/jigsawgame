@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/exit_bg">
+    <LinearLayout
+        android:id="@+id/exit_noti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/exit_noti"
+        android:layout_marginTop="@dimen/exit_padding_top"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_below="@id/exit_noti"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/exit_ok_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/exit_ok_btn"/>
+        <Button
+            android:id="@+id/exit_back_btn"
+            android:layout_toRightOf="@id/exit_ok_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/exit_back_btn"/>
+    </RelativeLayout>
+</RelativeLayout>
