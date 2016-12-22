@@ -246,13 +246,13 @@ public class HomeLayer extends BaseLayer {
                 return true;
             } else if (tag == layer.sceneBtn0.getTag()) {
                 CCScene scene = layer.mSceneManager.getScene(SceneManager.SCENE_SELECT);
-                ((SelectScene)scene).a(0);
+                ((SelectScene)scene).setSide(0);
                 CCDirector.sharedDirector().replaceScene(CCShrinkGrowTransition.transition(1.0F, scene));
                 layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_ui_switch);
                 return true;
             } else if (tag == layer.sceneBtn1.getTag()) {
                 CCScene scene = layer.mSceneManager.getScene(SceneManager.SCENE_SELECT);
-                ((SelectScene) scene).a(1);
+                ((SelectScene) scene).setSide(1);
                 CCDirector.sharedDirector().replaceScene(CCShrinkGrowTransition.transition(1.0F, scene));
                 layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_ui_switch);
                 return true;

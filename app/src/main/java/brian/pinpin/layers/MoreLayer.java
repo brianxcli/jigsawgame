@@ -6,6 +6,8 @@ import brian.pinpin.R;
 import brian.pinpin.events.TouchDelegateProtocol;
 import brian.pinpin.managers.SceneManager;
 import brian.pinpin.nodes.ButtonSprite;
+import brian.pinpin.scenes.IBaseScene;
+
 import java.util.List;
 import org.cocos2d.events.CCTouchDispatcher;
 import org.cocos2d.layers.CCScene;
@@ -117,6 +119,7 @@ public class MoreLayer extends BaseLayer {
                 layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_back_to_prev);
                 CCScene scene = layer.mSceneManager.getScene(SceneManager.SCENE_HOME);
                 CCDirector.sharedDirector().replaceScene(scene);
+                ((IBaseScene)layer.getParent()).cleanupScene();
                 return true;
             }
             return false;

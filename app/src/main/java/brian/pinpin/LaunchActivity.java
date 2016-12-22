@@ -98,21 +98,15 @@ public class LaunchActivity extends Activity implements OnClickListener {
         super.onStart();
         CCScene scene = CCDirector.sharedDirector().getRunningScene();
         if (scene != null) {
-            CCNode node = scene.getChildByTag(0);
-            if (node != null) {
-                node.onEnter();
-            }
+            scene.onEnter();
         }
     }
 
     public void onStop() {
         super.onStop();
         CCScene scene = CCDirector.sharedDirector().getRunningScene();
-        if(scene != null) {
-            CCNode node = scene.getChildByTag(0);
-            if(node != null) {
-                node.onExit();
-            }
+        if (scene != null) {
+            scene.onExit();
         }
     }
 

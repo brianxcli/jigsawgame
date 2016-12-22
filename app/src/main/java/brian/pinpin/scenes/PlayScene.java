@@ -1,9 +1,11 @@
 package brian.pinpin.scenes;
 
 import brian.pinpin.layers.PlayLayer;
+import brian.pinpin.managers.SceneManager;
+
 import org.cocos2d.layers.CCScene;
 
-public class PlayScene extends CCScene {
+public class PlayScene extends CCScene implements IBaseScene {
     private PlayLayer layer;
 
     private PlayScene(){}
@@ -14,10 +16,14 @@ public class PlayScene extends CCScene {
 
     public void setPlayLayer(int side, int number) {
         layer = new PlayLayer(side, number);
-        addChild(layer, -1, 0);
+        addChild(layer, SceneManager.Z_ORDER_LAYER, SceneManager.TAG_LAYER);
     }
 
     public void saveFinished() {
         layer.saveFinished();
+    }
+
+    public void cleanupScene() {
+        removeSelf();
     }
 }

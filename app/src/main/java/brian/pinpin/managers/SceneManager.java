@@ -9,6 +9,9 @@ import brian.pinpin.scenes.SelectScene;
 import org.cocos2d.layers.CCScene;
 
 public class SceneManager implements IService {
+    public static final int TAG_LAYER = 0;
+    public static final int Z_ORDER_LAYER = -1;
+
     public static final int SCENE_FLASH = 1;
     public static final int SCENE_HOME = 2;
     public static final int SCENE_SELECT = 3;
@@ -24,7 +27,7 @@ public class SceneManager implements IService {
     }
 
     public CCScene getScene(int scene) {
-        switch(scene) {
+        switch (scene) {
             case SCENE_FLASH:
                 return FlashScene.create();
             case SCENE_HOME:
@@ -40,13 +43,6 @@ public class SceneManager implements IService {
             default:
                 return null;
         }
-    }
-
-    public void finish() {
-    }
-
-    public void init() {
-        //onTouchesCancelled = createBackground();
     }
 
     public void onCreate() {

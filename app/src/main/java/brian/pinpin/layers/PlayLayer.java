@@ -1,12 +1,12 @@
 package brian.pinpin.layers;
 
 import android.view.MotionEvent;
-import android.widget.Button;
 
 import brian.pinpin.R;
 import brian.pinpin.managers.SceneManager;
 import brian.pinpin.nodes.ButtonSprite;
 import brian.pinpin.events.TouchDelegateProtocol;
+import brian.pinpin.scenes.IBaseScene;
 import brian.pinpin.scenes.SelectScene;
 import brian.pinpin.utils.AppConst;
 import brian.pinpin.utils.PublicUtils;
@@ -949,10 +949,10 @@ public class PlayLayer extends BaseLayer {
             if (tag == BACK_ID) {
                 layer.mSoundManager.playEffect(layer.mContext, brian.pinpin.R.raw.sound_back_to_prev);
                 layer.mSaveManager.setPassedCount(layer.mSide, layer.mNumber, layer.passedNum);
-
                 SelectScene scene = (SelectScene) layer.mSceneManager.getScene(SceneManager.SCENE_SELECT);
-                scene.a(layer.getDifficulty(layer.mSide));
+                scene.setSide(layer.getDifficulty(layer.mSide));
                 CCDirector.sharedDirector().replaceScene(scene);
+                ((IBaseScene)layer.getParent()).cleanupScene();
             } else if (tag == layer.mMagicWand.getTag()) {
                 layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_wand_reset);
                 layer.removeAllFragments();

@@ -6,6 +6,7 @@ import brian.pinpin.R;
 import brian.pinpin.managers.SceneManager;
 import brian.pinpin.nodes.ButtonSprite;
 import brian.pinpin.events.TouchDelegateProtocol;
+import brian.pinpin.scenes.IBaseScene;
 import brian.pinpin.scenes.PlayScene;
 
 import java.util.List;
@@ -243,11 +244,13 @@ public class SelectLayer extends BaseLayer {
             if (tag == BaseLayer.BACK_ID) {
                 layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_back_to_prev);
                 CCDirector.sharedDirector().replaceScene(layer.mSceneManager.getScene(SceneManager.SCENE_HOME));
+                ((IBaseScene)layer.getParent()).cleanupScene();
                 return true;
             } else if (layer.mTrials[0].getTag() <= tag && tag <= layer.mTrials[ANIMAL_PER_SCENE - 1].getTag()) {
                 PlayScene scene = (PlayScene)layer.mSceneManager.getScene(SceneManager.SCENE_PLAY);
                 scene.setPlayLayer(layer.mType, tag);
                 CCDirector.sharedDirector().replaceScene(CCShrinkGrowTransition.transition(1.0F, scene));
+                ((IBaseScene)layer.getParent()).cleanupScene();
                 return true;
             } else {
                 return false;
