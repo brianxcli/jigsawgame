@@ -55,7 +55,7 @@ public class SelectLayer extends BaseLayer {
         String scene = "scene" + type;
         addBackground(scene + ".png");
         backBtn = ButtonSprite.create("back.png", "back_sel.png");
-        backBtn.setPosition(d);
+        backBtn.setPosition(mBackPos);
         addChild(backBtn, 2, BaseLayer.BACK_ID);
 
         for (int i = 0; i < ANIMAL_PER_SCENE; i++) {

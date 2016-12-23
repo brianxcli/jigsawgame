@@ -87,11 +87,11 @@ public class HomeLayer extends BaseLayer {
         addChild(moreBtn, 1, index++);
 
         soundBtn = ButtonSprite.create("sound_sel.png", "sound.png");
-        soundBtn.setPosition(d);
+        soundBtn.setPosition(mBackPos);
         addChild(this.soundBtn, 1, index++);
 
         aboutBtn = ButtonSprite.create("about_sel.png", "about.png");
-        aboutBtn.setPosition((float)width - d.x, d.y);
+        aboutBtn.setPosition((float)width - mBackPos.x, mBackPos.y);
         addChild(aboutBtn, 1, index);
     }
 

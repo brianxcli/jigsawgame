@@ -19,7 +19,7 @@ public class BaseLayer extends CCLayer {
 
     protected CCSprite mBackground;
     protected ButtonSprite backBtn;
-    protected CGPoint d = CGPoint.make(90.0F, 100.0F);
+    protected CGPoint mBackPos = CGPoint.make(90.0F, 100.0F);
     protected Context mContext = CCDirector.sharedDirector().getActivity().getApplicationContext();
     protected SoundManager mSoundManager = (SoundManager) ManagerService.getInstance().getService(ManagerService.SOUND_MANAGER);
     protected SceneManager mSceneManager = (SceneManager) ManagerService.getInstance().getService(ManagerService.SCENE_MANAGER);

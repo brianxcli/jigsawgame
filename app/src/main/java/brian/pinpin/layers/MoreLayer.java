@@ -29,7 +29,7 @@ public class MoreLayer extends BaseLayer {
         addBackground("more_bg.png");
 
         backBtn = ButtonSprite.create("back.png", "back_sel.png");
-        backBtn.setPosition(d);
+        backBtn.setPosition(mBackPos);
         addChild(backBtn, 1, BaseLayer.BACK_ID);
 
         float x = centerHorizontal / 4 + 100F;

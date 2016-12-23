@@ -20,7 +20,7 @@ public class AboutLayer extends BaseLayer {
     public AboutLayer() {
         addBackground("about_bg.png");
         backBtn = ButtonSprite.create("back.png", "back_sel.png");
-        backBtn.setPosition(this.d);
+        backBtn.setPosition(this.mBackPos);
         addChild(backBtn, 1, 0);
         callback = new AboutLayerCallback(this);
     }

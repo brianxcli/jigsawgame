@@ -139,7 +139,7 @@ public class PlayLayer extends BaseLayer {
         mMagicWandAction = CCRepeat.action(CCSequence.actions(CCMoveTo.action(2.0F, var2), CCMoveTo.action(2.0F, var3)), Integer.MAX_VALUE);
 
         backBtn = ButtonSprite.create("back.png", "back_sel.png");
-        backBtn.setPosition(d);
+        backBtn.setPosition(mBackPos);
 
         addChild(backBtn, 1, BACK_ID);
         addChild(mBlackboard, 1, TAG_BLACKBOARD);
