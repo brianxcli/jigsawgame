@@ -59,7 +59,7 @@ public class AboutLayer extends BaseLayer {
 
     public void onExit() {
         super.onExit();
-        this.backBtn.removeCallBack();
+        backBtn.removeCallBack();
         CCTouchDispatcher.sharedDispatcher().removeDelegate(this);
     }
 
