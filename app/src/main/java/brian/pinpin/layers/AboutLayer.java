@@ -66,7 +66,7 @@ public class AboutLayer extends BaseLayer {
     private static class AboutLayerCallback implements TouchDelegateProtocol {
         private AboutLayer layer;
 
-        public AboutLayerCallback(AboutLayer layer) {
+        AboutLayerCallback(AboutLayer layer) {
             this.layer = layer;
         }
 
