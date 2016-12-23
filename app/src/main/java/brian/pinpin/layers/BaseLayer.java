@@ -14,37 +14,34 @@ import org.cocos2d.nodes.CCSprite;
 import org.cocos2d.types.CGPoint;
 import org.cocos2d.types.CGSize;
 
-public class BaseLayer extends CCLayer {
-    protected static int BACK_ID = -2;
+class BaseLayer extends CCLayer {
+    static final int BACK_ID = -2;
 
-    protected CCSprite mBackground;
-    protected ButtonSprite backBtn;
-    protected CGPoint mBackPos = CGPoint.make(90.0F, 100.0F);
-    protected Context mContext = CCDirector.sharedDirector().getActivity().getApplicationContext();
-    protected SoundManager mSoundManager = (SoundManager) ManagerService.getInstance().getService(ManagerService.SOUND_MANAGER);
-    protected SceneManager mSceneManager = (SceneManager) ManagerService.getInstance().getService(ManagerService.SCENE_MANAGER);
-    protected SaveManager mSaveManager = (SaveManager) ManagerService.getInstance().getService(ManagerService.SAVE_MANAGER);
-    protected int width;
-    protected int height;
-    protected float centerHorizontal;
+    CCSprite mBackground;
+    ButtonSprite backBtn;
+    CGPoint mBackPos = CGPoint.make(90.0F, 100.0F);
+    Context mContext = CCDirector.sharedDirector().getActivity().getApplicationContext();
+    SoundManager mSoundManager = (SoundManager) ManagerService.getInstance().getService(ManagerService.SOUND_MANAGER);
+    SceneManager mSceneManager = (SceneManager) ManagerService.getInstance().getService(ManagerService.SCENE_MANAGER);
+    SaveManager mSaveManager = (SaveManager) ManagerService.getInstance().getService(ManagerService.SAVE_MANAGER);
+    int width;
+    int height;
+    float centerHorizontal;
 
-    protected BaseLayer() {
+    BaseLayer() {
         mSaveManager.setContext(mContext);
         width = SceneManager.sceneWidth;
         height = SceneManager.sceneHeight;
         centerHorizontal = (float)width / 2.0F;
     }
 
-    protected void addBackground(String res) {
+    void addBackground(String res) {
         mBackground = new CCSprite(res);
-        if(mBackground != null) {
-            mBackground.setAnchorPoint(0.0F, 0.0F);
-            mBackground.setPosition(0.0F, 0.0F);
-            CGSize size = mBackground.getContentSize();
-            mBackground.setScaleX(width / size.getWidth());
-            mBackground.setScaleY(height / size.getHeight());
-            addChild(mBackground);
-        }
-
+        mBackground.setAnchorPoint(0.0F, 0.0F);
+        mBackground.setPosition(0.0F, 0.0F);
+        CGSize size = mBackground.getContentSize();
+        mBackground.setScaleX(width / size.getWidth());
+        mBackground.setScaleY(height / size.getHeight());
+        addChild(mBackground);
     }
 }
