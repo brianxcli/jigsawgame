@@ -16,7 +16,9 @@ public class FlashLayer extends BaseLayer {
 
     public void onEnter() {
         super.onEnter();
-        mBackground.runAction(CCSequence.actions(CCCallFunc.action(this, "preloadEffects"), new CCFiniteTimeAction[]{CCCallFunc.action(this, "onWaitFinish")}));
+        mBackground.runAction(CCSequence.actions(
+            CCCallFunc.action(this, "preloadEffects"),
+            CCCallFunc.action(this, "onWaitFinish")));
     }
 
     public void onExit() {
