@@ -126,7 +126,7 @@ public class PlayLayer extends BaseLayer {
 
         mBlackboard = CCSprite.sprite("blackboard.png");
         mBlackboard.setAnchorPoint(1.0F, 0.0F);
-        mBlackboardPos = CGPoint.ccp(width - 80, 20.0F);
+        mBlackboardPos = CGPoint.ccp(mScreenWidth - 80, 20.0F);
         mBlackboard.setPosition(mBlackboardPos);
 
         mMagicWand = ButtonSprite.create("magic.png", "magicHighlight.png");
@@ -314,7 +314,7 @@ public class PlayLayer extends BaseLayer {
     private void initTrialIconSprites() {
         // At most 4 trials for each animal
         mTrialIconPos = new CGPoint[4];
-        float top = height - 80;
+        float top = mScreenHeight - 80;
         mTrialIconPos[0] = CGPoint.ccp(120.0F, top);
         mTrialIconPos[1] = CGPoint.ccp(120.0F, top - 110.0F);
         mTrialIconPos[2] = CGPoint.ccp(140 + 120.0F, top - 20);
@@ -363,8 +363,8 @@ public class PlayLayer extends BaseLayer {
     private void initOriginSize() {
 //        CGSize oriSize = mOriginalBig.getContentSize();
 //        CGSize bSize = mBlackboard.getContentSize();
-//        G = CGPoint.ccp(mBlackboardPos.x - (bSize.width - oriSize.width) / 2.0F,
-//                mBlackboardPos.y + (bSize.height - oriSize.height) / 2.0F - 13.0F);
+//        G = CGPoint.ccp(mBlackboardPos.x - (bSize.mScreenWidth - oriSize.mScreenWidth) / 2.0F,
+//                mBlackboardPos.y + (bSize.mScreenHeight - oriSize.mScreenHeight) / 2.0F - 13.0F);
     }
 
     private void initStars() {

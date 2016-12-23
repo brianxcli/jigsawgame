@@ -48,7 +48,7 @@ public class HomeLayer extends BaseLayer {
     private void initButtons() {
         titleSprite = new CCSprite("title.png");
         titleSprite.setAnchorPoint(0.5F, 1.0F);
-        titleSprite.setPosition(centerHorizontal, (float)(height - 20));
+        titleSprite.setPosition(centerHorizontal, (float)(mScreenHeight - 20));
         titleAction = CCRepeat.action(CCSequence.actions(CCMoveTo.action(2.0F, CGPoint.ccp(titleSprite.getPositionRef().x, titleSprite.getPositionRef().y - 5.0F)),
                 new CCFiniteTimeAction[]{CCMoveTo.action(2.0F, CGPoint.ccp(titleSprite.getPositionRef().x, titleSprite.getPositionRef().y + 5.0F))}), 2147483647);
         addChild(titleSprite, 1, index++);
@@ -91,7 +91,7 @@ public class HomeLayer extends BaseLayer {
         addChild(this.soundBtn, 1, index++);
 
         aboutBtn = ButtonSprite.create("about_sel.png", "about.png");
-        aboutBtn.setPosition((float)width - mBackPos.x, mBackPos.y);
+        aboutBtn.setPosition((float) mScreenWidth - mBackPos.x, mBackPos.y);
         addChild(aboutBtn, 1, index);
     }
 

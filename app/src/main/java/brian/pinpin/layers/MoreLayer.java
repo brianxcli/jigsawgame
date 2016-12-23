@@ -34,11 +34,11 @@ public class MoreLayer extends BaseLayer {
 
         float x = centerHorizontal / 4 + 100F;
         mPaipaiBtn = ButtonSprite.create("paipai.png", "paipai_sel.png");
-        mPaipaiBtn.setPosition(x, (float)(height - height / 4) - 100.0F);
+        mPaipaiBtn.setPosition(x, (float)(mScreenHeight - mScreenHeight / 4) - 100.0F);
         addChild(mPaipaiBtn, 1, TAG_PAIPAI);
 
         mColorBtn = ButtonSprite.create("color.png", "color_sel.png");
-        mColorBtn.setPosition(x, (float)(height - height / 2) - (120.0F + 40.0F));
+        mColorBtn.setPosition(x, (float)(mScreenHeight - mScreenHeight / 2) - (120.0F + 40.0F));
         addChild(mColorBtn, 1, TAG_COLOR);
     }
 
