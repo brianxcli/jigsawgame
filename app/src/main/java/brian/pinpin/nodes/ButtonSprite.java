@@ -42,10 +42,6 @@ public class ButtonSprite extends CCSprite implements CCTouchDelegateProtocol {
         this.protocol = protocol;
     }
 
-    public boolean isHighlight() {
-        return isHighlight;
-    }
-
     public boolean ccTouchesBegan(MotionEvent event) {
         if (isEnable && containsEvent(event)) {
             highlight();
