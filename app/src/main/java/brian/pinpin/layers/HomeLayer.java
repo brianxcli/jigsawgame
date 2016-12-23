@@ -27,7 +27,6 @@ public class HomeLayer extends BaseLayer {
     private CCAction sceneBtn0Action;
     private CCAction sceneBtn1Action;
 
-    public final String a = "HomeLayer";
     private int lastTouched;
     private int index = 0;
     private CCSprite titleSprite;
@@ -49,36 +48,44 @@ public class HomeLayer extends BaseLayer {
         titleSprite = new CCSprite("title.png");
         titleSprite.setAnchorPoint(0.5F, 1.0F);
         titleSprite.setPosition(centerHorizontal, (float)(mScreenHeight - 20));
-        titleAction = CCRepeat.action(CCSequence.actions(CCMoveTo.action(2.0F, CGPoint.ccp(titleSprite.getPositionRef().x, titleSprite.getPositionRef().y - 5.0F)),
-                new CCFiniteTimeAction[]{CCMoveTo.action(2.0F, CGPoint.ccp(titleSprite.getPositionRef().x, titleSprite.getPositionRef().y + 5.0F))}), 2147483647);
+        titleAction = CCRepeat.action(CCSequence.actions(
+            CCMoveTo.action(2.0F, CGPoint.ccp(titleSprite.getPositionRef().x, titleSprite.getPositionRef().y - 5.0F)),
+            CCMoveTo.action(2.0F, CGPoint.ccp(titleSprite.getPositionRef().x, titleSprite.getPositionRef().y + 5.0F))),
+            Integer.MAX_VALUE);
         addChild(titleSprite, 1, index++);
 
         cloudSprite = new CCSprite("cloud.png");
         cloudSprite.setPosition(centerHorizontal, 157.0F);
-        cloudAction = CCRepeat.action(CCSequence.actions(CCMoveTo.action(2.0F, CGPoint.ccp(cloudSprite.getPositionRef().x - 3.0F, cloudSprite.getPositionRef().y)),
-                new CCFiniteTimeAction[]{CCMoveTo.action(2.0F, CGPoint.ccp(cloudSprite.getPositionRef().x + 3.0F, cloudSprite.getPositionRef().y))}), 2147483647);
+        cloudAction = CCRepeat.action(CCSequence.actions(
+            CCMoveTo.action(2.0F, CGPoint.ccp(cloudSprite.getPositionRef().x - 3.0F, cloudSprite.getPositionRef().y)),
+            CCMoveTo.action(2.0F, CGPoint.ccp(cloudSprite.getPositionRef().x + 3.0F, cloudSprite.getPositionRef().y))),
+            Integer.MAX_VALUE);
         addChild(cloudSprite, 1, index++);
 
-        float var2 = centerHorizontal - 20.0F;
-        float var3 = titleSprite.getPosition().y - titleSprite.getContentSize().height + 40.0F;
+        float x = centerHorizontal - 20.0F;
+        float y = titleSprite.getPosition().y - titleSprite.getContentSize().height + 40.0F;
 
         sceneBtn0 = ButtonSprite.create("sceneButton0.png", "sceneButtonHighlight0.png");
         sceneBtn0.setAnchorPoint(1.0F, 1.0F);
-        sceneBtn0.setPosition(var2, var3);
-        sceneBtn0Action = CCRepeat.action(CCSequence.actions(CCMoveTo.action(2.0F, CGPoint.ccp(var2 - 5.0F, var3 - 5.0F)),
-                new CCFiniteTimeAction[]{CCMoveTo.action(2.0F, CGPoint.ccp(var2 + 5.0F, var3 - 5.0F)),
-                        CCMoveTo.action(2.0F, CGPoint.ccp(var2 + 5.0F, var3 + 5.0F)),
-                        CCMoveTo.action(2.0F, CGPoint.ccp(var2 - 5.0F, var3 + 5.0F))}), 2147483647);
+        sceneBtn0.setPosition(x, y);
+        sceneBtn0Action = CCRepeat.action(CCSequence.actions(
+            CCMoveTo.action(2.0F, CGPoint.ccp(x - 5.0F, y - 5.0F)),
+            CCMoveTo.action(2.0F, CGPoint.ccp(x + 5.0F, y - 5.0F)),
+            CCMoveTo.action(2.0F, CGPoint.ccp(x + 5.0F, y + 5.0F)),
+            CCMoveTo.action(2.0F, CGPoint.ccp(x - 5.0F, y + 5.0F))),
+            Integer.MAX_VALUE);
         addChild(sceneBtn0, 1, index++);
 
-        var2 = centerHorizontal + 20.0F;
+        x = centerHorizontal + 20.0F;
         sceneBtn1 = ButtonSprite.create("sceneButton1.png", "sceneButtonHighlight1.png");
         sceneBtn1.setAnchorPoint(0.0F, 1.0F);
-        sceneBtn1.setPosition(var2, var3);
-        sceneBtn1Action = CCRepeat.action(CCSequence.actions(CCMoveTo.action(2.0F, CGPoint.ccp(var2 + 5.0F, var3 + 5.0F)),
-                new CCFiniteTimeAction[]{CCMoveTo.action(2.0F, CGPoint.ccp(var2 - 5.0F, var3 + 5.0F)),
-                        CCMoveTo.action(2.0F, CGPoint.ccp(var2 - 5.0F, var3 - 5.0F)),
-                        CCMoveTo.action(2.0F, CGPoint.ccp(var2 + 5.0F, var3 - 5.0F))}), 2147483647);
+        sceneBtn1.setPosition(x, y);
+        sceneBtn1Action = CCRepeat.action(CCSequence.actions(
+            CCMoveTo.action(2.0F, CGPoint.ccp(x + 5.0F, y + 5.0F)),
+            CCMoveTo.action(2.0F, CGPoint.ccp(x - 5.0F, y + 5.0F)),
+            CCMoveTo.action(2.0F, CGPoint.ccp(x - 5.0F, y - 5.0F)),
+            CCMoveTo.action(2.0F, CGPoint.ccp(x + 5.0F, y - 5.0F))),
+            Integer.MAX_VALUE);
         addChild(sceneBtn1, 1, index++);
 
         moreBtn = ButtonSprite.create("more0.png", "more1.png");
@@ -88,7 +95,7 @@ public class HomeLayer extends BaseLayer {
 
         soundBtn = ButtonSprite.create("sound_sel.png", "sound.png");
         soundBtn.setPosition(mBackPos);
-        addChild(this.soundBtn, 1, index++);
+        addChild(soundBtn, 1, index++);
 
         aboutBtn = ButtonSprite.create("about_sel.png", "about.png");
         aboutBtn.setPosition((float) mScreenWidth - mBackPos.x, mBackPos.y);
@@ -121,7 +128,7 @@ public class HomeLayer extends BaseLayer {
         return CGRect.containsPoint(sprite.getBoundingBox(), point);
     }
 
-    public void toggleSound() {
+    private void toggleSound() {
         if (mSoundManager.isMute()) {
             soundBtn.highlight();
             mSoundManager.unmute();
@@ -133,12 +140,12 @@ public class HomeLayer extends BaseLayer {
 
     public boolean ccTouchesBegan(MotionEvent event) {
         ButtonSprite sprite = contains(event);
-        return (sprite != null) ? sprite.ccTouchesBegan(event) : false;
+        return sprite != null && sprite.ccTouchesBegan(event);
     }
 
     public boolean ccTouchesCancelled(MotionEvent event) {
         ButtonSprite sprite = contains(event);
-        return (sprite != null) ? sprite.ccTouchesCancelled(event) : false;
+        return sprite != null && sprite.ccTouchesCancelled(event);
     }
 
     public boolean ccTouchesEnded(MotionEvent event) {
@@ -165,24 +172,24 @@ public class HomeLayer extends BaseLayer {
             }
 
             node = getChildByTag(lastTouched);
-            if(node != null && node instanceof ButtonSprite) {
+            if (node instanceof ButtonSprite) {
                 ((ButtonSprite)node).normal();
             }
 
             sprite.highlight();
-            this.lastTouched = tag;
+            lastTouched = tag;
         } else {
             node = getChildByTag(lastTouched);
-            if(node != null && node instanceof ButtonSprite) {
-                ButtonSprite var5 = (ButtonSprite)node;
-                if (var5 == soundBtn) {
+            if (node instanceof ButtonSprite) {
+                ButtonSprite button = (ButtonSprite)node;
+                if (button == soundBtn) {
                     toggleSound();
                 } else {
-                    var5.normal();
+                    button.normal();
                 }
             }
 
-            this.lastTouched = this.index;
+            lastTouched = index;
         }
 
         return false;
@@ -219,7 +226,7 @@ public class HomeLayer extends BaseLayer {
     private static class HomeLayerTouchCallback implements TouchDelegateProtocol {
         private HomeLayer layer;
 
-        public HomeLayerTouchCallback(HomeLayer layer) {
+        HomeLayerTouchCallback(HomeLayer layer) {
             this.layer = layer;
         }
 
