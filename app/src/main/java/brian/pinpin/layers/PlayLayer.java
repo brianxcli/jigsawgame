@@ -8,7 +8,6 @@ import brian.pinpin.nodes.ButtonSprite;
 import brian.pinpin.events.TouchDelegateProtocol;
 import brian.pinpin.scenes.IBaseScene;
 import brian.pinpin.scenes.SelectScene;
-import brian.pinpin.utils.AppConst;
 import brian.pinpin.utils.PublicUtils;
 
 import java.util.List;
@@ -26,7 +25,6 @@ import org.cocos2d.nodes.CCDirector;
 import org.cocos2d.nodes.CCNode;
 import org.cocos2d.nodes.CCSprite;
 import org.cocos2d.types.CGPoint;
-import org.cocos2d.types.CGRect;
 import org.cocos2d.types.CGSize;
 
 public class PlayLayer extends BaseLayer {
@@ -51,12 +49,8 @@ public class PlayLayer extends BaseLayer {
     private ButtonSprite mMagnifier;
 
     private CGPoint mBlackboardPos;
-    private CGPoint mMagicWandPos;
     private CGPoint[] mStarPos;
-    private CGPoint[] mTrialIconPos;
     private CGPoint mOriginalBigPos;
-    private CGPoint mOriginIconPos;
-    private CGPoint mMagnifierPos;
 
     private String[][] mOriginPics;
     private String[][] mStageIconRes;
@@ -131,11 +125,11 @@ public class PlayLayer extends BaseLayer {
 
         mMagicWand = ButtonSprite.create("magic.png", "magicHighlight.png");
         mMagicWand.setAnchorPoint(1.0F, 0.0F);
-        mMagicWandPos = CGPoint.ccp(mBlackboardPos.x + 60.0F, mBlackboardPos.y - 20.0F);
-        mMagicWand.setPosition(mMagicWandPos);
+        CGPoint magicWandPos = CGPoint.ccp(mBlackboardPos.x + 60.0F, mBlackboardPos.y - 20.0F);
+        mMagicWand.setPosition(magicWandPos);
 
-        CGPoint var2 = CGPoint.ccp(mMagicWandPos.x - 3.0F, mMagicWandPos.y + 3.0F);
-        CGPoint var3 = CGPoint.ccp(mMagicWandPos.x + 3.0F, mMagicWandPos.y - 3.0F);
+        CGPoint var2 = CGPoint.ccp(magicWandPos.x - 3.0F, magicWandPos.y + 3.0F);
+        CGPoint var3 = CGPoint.ccp(magicWandPos.x + 3.0F, magicWandPos.y - 3.0F);
         mMagicWandAction = CCRepeat.action(CCSequence.actions(CCMoveTo.action(2.0F, var2), CCMoveTo.action(2.0F, var3)), Integer.MAX_VALUE);
 
         backBtn = ButtonSprite.create("back.png", "back_sel.png");
@@ -307,18 +301,17 @@ public class PlayLayer extends BaseLayer {
         initTrialIconSprites();
         initOriginIcon();
         initStars();
-        // initOriginSize();
         playOriginalHint();
     }
 
     private void initTrialIconSprites() {
         // At most 4 trials for each animal
-        mTrialIconPos = new CGPoint[4];
+        CGPoint[] trialPos = new CGPoint[4];
         float top = mScreenHeight - 80;
-        mTrialIconPos[0] = CGPoint.ccp(120.0F, top);
-        mTrialIconPos[1] = CGPoint.ccp(120.0F, top - 110.0F);
-        mTrialIconPos[2] = CGPoint.ccp(140 + 120.0F, top - 20);
-        mTrialIconPos[3] = CGPoint.ccp(140 + 120.0F, top - 20 - 110.0F);
+        trialPos[0] = CGPoint.ccp(120.0F, top);
+        trialPos[1] = CGPoint.ccp(120.0F, top - 110.0F);
+        trialPos[2] = CGPoint.ccp(140 + 120.0F, top - 20);
+        trialPos[3] = CGPoint.ccp(140 + 120.0F, top - 20 - 110.0F);
 
         int trials = mTrialsNums[mSide][mNumber];
         mTrialIcons = new CCSprite[trials];
@@ -326,12 +319,12 @@ public class PlayLayer extends BaseLayer {
         for (int i = 0; i < trials; i++) {
             if (i <= passedNum) {
                 mTrialIcons[i] = ButtonSprite.create(mStageIconRes[i][0], mStageIconRes[i][1]);
-                mTrialIcons[i].setPosition(mTrialIconPos[i]);
+                mTrialIcons[i].setPosition(trialPos[i]);
                 ((ButtonSprite)mTrialIcons[i]).addCallback(callback);
                 addChild(mTrialIcons[i], 0, TAG_TRIAL_ICONS[i]);
             } else {
                 mTrialIcons[i] = CCSprite.sprite("lock.png");
-                mTrialIcons[i].setPosition(mTrialIconPos[i]);
+                mTrialIcons[i].setPosition(trialPos[i]);
                 addChild(mTrialIcons[i], 0, TAG_TRIAL_ICONS[i]);
             }
         }
@@ -340,8 +333,8 @@ public class PlayLayer extends BaseLayer {
     private void initOriginIcon() {
         mMagnifier = ButtonSprite.create("originalButton.png", "originalButtonHighlight.png");
         mMagnifier.setAnchorPoint(1.0F, 0.0F);
-        mMagnifierPos = CGPoint.ccp(mBlackboardPos.x - mBlackboard.getContentSize().getWidth() - 20, mBlackboardPos.y);
-        mMagnifier.setPosition(mMagnifierPos);
+        CGPoint magnifierPos = CGPoint.ccp(mBlackboardPos.x - mBlackboard.getContentSize().getWidth() - 20, mBlackboardPos.y);
+        mMagnifier.setPosition(magnifierPos);
 
         mOriginalBig = CCSprite.sprite(mOriginPics[mCurrentTrial - 1][0]);
         mOriginalBig.setAnchorPoint(1.0F, 0.0F);
@@ -351,9 +344,9 @@ public class PlayLayer extends BaseLayer {
 
         mOriginIcon = CCSprite.sprite(mOriginPics[mCurrentTrial - 1][1]);
         mOriginIcon.setAnchorPoint(0.5F, 0.5F);
-        mOriginIconPos = CGPoint.ccp(mMagnifierPos.x - mMagnifier.getContentSize().getWidth() / 2 + 10.0F,
-                mMagnifierPos.y + mMagnifier.getContentSize().getHeight() / 2 + 20.0F);
-        mOriginIcon.setPosition(mOriginIconPos);
+        CGPoint originIconPos = CGPoint.ccp(magnifierPos.x - mMagnifier.getContentSize().getWidth() / 2 + 10.0F,
+                magnifierPos.y + mMagnifier.getContentSize().getHeight() / 2 + 20.0F);
+        mOriginIcon.setPosition(originIconPos);
 
         addChild(mMagnifier, 1, TAG_MAGNIFIER);
         addChild(mOriginalBig, 1, TAG_ORIGIN_BIG);
@@ -389,10 +382,6 @@ public class PlayLayer extends BaseLayer {
             mStarPos[i] = CGPoint.ccp((float)(i * 90) + (var1 - var2 - 90.0F), var3 + var4 - 80.0F);
         }
     }
-
-//    private CCSprite q() {
-//        return (CCSprite)mLastFragment.getChildByTag(-1);
-//    }
 
     private void playBgMusic() {
         mSoundManager.playSound(mContext, R.raw.sound_bg_music_play, true);
@@ -577,8 +566,6 @@ public class PlayLayer extends BaseLayer {
                     U = mLastFragmentX;
                     V = mLastFragmentY;
                     reorderChild(mLastFragment, 3);
-                    //TODO set color
-                    // q().setColor(ccColor3B.ccWHITE);
                     mLastFragmentPos = mLastFragment.getPosition();
                 }
                 return true;
@@ -691,8 +678,6 @@ public class PlayLayer extends BaseLayer {
                 }
             } else {
                 mLastFragment.setPosition(mLastFragmentPos);
-                //TODO the color thing
-                //(((CCSprite) mLastFragment.getChildByTag(-1))).setColor(AppConst.getPassedCout);
                 reorderChild(mLastFragment, 1);
                 mLastPointerId = -1;
                 mLastFragment = null;
@@ -877,14 +862,6 @@ public class PlayLayer extends BaseLayer {
 
     public void playSwapEffect() {
         mSoundManager.playEffect(mContext, R.raw.sound_swap_position);
-    }
-
-    public void resetFocusedFragmentBgColor() {
-        ((CCSprite) mLastFragment.getChildByTag(-1)).setColor(AppConst.a);
-    }
-
-    public void resetTargetFragmentBgColor() {
-        ((CCSprite) mSwitchTarget.getChildByTag(-1)).setColor(AppConst.a);
     }
 
     public void saveFinished() {
