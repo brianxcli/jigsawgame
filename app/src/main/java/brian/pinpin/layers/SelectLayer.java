@@ -18,12 +18,10 @@ import org.cocos2d.types.CGRect;
 import org.cocos2d.transitions.CCShrinkGrowTransition;
 
 public class SelectLayer extends BaseLayer {
-    public final String a = "SelectLayer";
     private static final int ANIMAL_PER_SCENE = 7;
 
     private ButtonSprite[] mTrials = new ButtonSprite[ANIMAL_PER_SCENE];
     private SelectLayerCallback callback;
-    private int r = -2;
     private int mType = -1;
 
     public SelectLayer(int type) {
@@ -84,61 +82,28 @@ public class SelectLayer extends BaseLayer {
         }
     }
 
-    private boolean contains(CCNode var1, CGPoint var2) {
-        return CGRect.containsPoint(var1.getBoundingBox(), var2);
+    private boolean contains(CCNode node, CGPoint point) {
+        return CGRect.containsPoint(node.getBoundingBox(), point);
     }
 
     public boolean ccTouchesBegan(MotionEvent event) {
-        ButtonSprite var2 = this.findSprite(event);
-        return var2 != null && var2.ccTouchesBegan(event);
+        ButtonSprite button = findSprite(event);
+        return button != null && button.ccTouchesBegan(event);
     }
 
     public boolean ccTouchesCancelled(MotionEvent event) {
-        ButtonSprite var2 = findSprite(event);
-        return var2 != null && var2.ccTouchesCancelled(event);
+        ButtonSprite button = findSprite(event);
+        return button != null && button.ccTouchesCancelled(event);
     }
 
-    public boolean ccTouchesEnded(MotionEvent var1) {
-        ButtonSprite var2 = this.findSprite(var1);
-        if(var2 != null) {
-            this.r = var2.getTag();
-            return var2.ccTouchesEnded(var1);
-        } else {
-            return true;
-        }
+    public boolean ccTouchesEnded(MotionEvent event) {
+        ButtonSprite button = findSprite(event);
+        return button != null && button.ccTouchesEnded(event);
     }
 
-    public boolean ccTouchesMoved(MotionEvent var1) {
-        ButtonSprite var3 = this.findSprite(var1);
-        CCNode var4;
-        if(var3 != null) {
-            int var2 = var3.getTag();
-            if(this.r == -2 || this.r == var2) {
-                if(this.r == -2) {
-                    this.r = var2;
-                    var3.highlight();
-                }
-
-                return var3.ccTouchesMoved(var1);
-            }
-
-            var4 = this.getChildByTag(this.r);
-            if(var4 != null && var4 instanceof ButtonSprite) {
-                ((ButtonSprite)var4).normal();
-            }
-
-            var3.highlight();
-            this.r = var2;
-        } else {
-            var4 = this.getChildByTag(this.r);
-            if(var4 != null && var4 instanceof ButtonSprite) {
-                ((ButtonSprite)var4).normal();
-            }
-
-            this.r = -2;
-        }
-
-        return false;
+    public boolean ccTouchesMoved(MotionEvent event) {
+        ButtonSprite button = findSprite(event);
+        return button != null && button.ccTouchesMoved(event);
     }
 
     public void onEnter() {
@@ -163,10 +128,10 @@ public class SelectLayer extends BaseLayer {
         }
 
         public boolean onTouchesBegan(MotionEvent event, int tag) {
-            if(BaseLayer.BACK_ID == tag) {
+            if (BaseLayer.BACK_ID == tag) {
                 return true;
-            } else if(layer.mType == 0) {
-                if (tag == 0) {
+            } else if (layer.mType == 0) {
+                if (0 == tag) {
                     layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_role_deer);
                     return true;
                 }
@@ -200,8 +165,8 @@ public class SelectLayer extends BaseLayer {
                     layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_role_turtle);
                     return true;
                 }
-            } else if(layer.mType == 1) {
-                if (tag == 0) {
+            } else if (layer.mType == 1) {
+                if (0 == tag) {
                     layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_role_goat);
                     return true;
                 }
