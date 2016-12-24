@@ -82,10 +82,6 @@ public class SelectLayer extends BaseLayer {
         }
     }
 
-    private boolean contains(CCNode node, CGPoint point) {
-        return CGRect.containsPoint(node.getBoundingBox(), point);
-    }
-
     public boolean ccTouchesBegan(MotionEvent event) {
         ButtonSprite button = findSprite(event);
         return button != null && button.ccTouchesBegan(event);

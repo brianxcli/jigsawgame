@@ -25,14 +25,10 @@ public class AboutLayer extends BaseLayer {
         callback = new AboutLayerCallback(this);
     }
 
-    private boolean containsPoint(CCSprite sprite, CGPoint point) {
-        return CGRect.containsPoint(sprite.getBoundingBox(), point);
-    }
-
     private boolean isBackEvent(MotionEvent event) {
         CGPoint point = new CGPoint();
         CCDirector.sharedDirector().convertToGL(event.getX(), event.getY(), point);
-        return containsPoint(backBtn, point);
+        return contains(backBtn, point);
     }
 
     public boolean ccTouchesBegan(MotionEvent event) {

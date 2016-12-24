@@ -360,13 +360,6 @@ public class PlayLayer extends BaseLayer {
         addChild(mOriginIcon, 1);
     }
 
-    private void initOriginSize() {
-//        CGSize oriSize = mOriginalBig.getContentSize();
-//        CGSize bSize = mBlackboard.getContentSize();
-//        G = CGPoint.ccp(mBlackboardPos.x - (bSize.mScreenWidth - oriSize.mScreenWidth) / 2.0F,
-//                mBlackboardPos.y + (bSize.mScreenHeight - oriSize.mScreenHeight) / 2.0F - 13.0F);
-    }
-
     private void initStars() {
         initStarPositions();
 
@@ -447,10 +440,6 @@ public class PlayLayer extends BaseLayer {
             default:
                 return 0;
         }
-    }
-
-    private boolean containsPoint(CCNode node, CGPoint point) {
-        return CGRect.containsPoint(node.getBoundingBox(), point);
     }
 
     /**
@@ -604,7 +593,7 @@ public class PlayLayer extends BaseLayer {
         CCDirector.sharedDirector().convertToGL(event.getX(), event.getY(), point);
         List<CCNode> children = getChildren();
         for (CCNode node : children) {
-            if ((node.getTag() > TAG_BLACKBOARD || node.getTag() == BACK_ID) && containsPoint(node, point) && node.getVisible()) {
+            if ((node.getTag() > TAG_BLACKBOARD || node.getTag() == BACK_ID) && contains(node, point) && node.getVisible()) {
                 return node;
             }
         }
@@ -687,7 +676,7 @@ public class PlayLayer extends BaseLayer {
             CCSprite sprite = (CCSprite)target;
             if (isSwappableFragment(sprite)) {
                 CGPoint curPos = mLastFragment.getPosition();
-                if (containsPoint(sprite, curPos)) {
+                if (this.contains(sprite, curPos)) {
                     // if the middle point of the current fragment reaches
                     // the boundary of the target fragment, swap the two fragments.
                     swapFragments(U, V, mLastFragmentX, mLastFragmentY);

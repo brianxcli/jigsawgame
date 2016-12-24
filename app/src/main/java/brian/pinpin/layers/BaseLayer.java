@@ -9,8 +9,10 @@ import brian.pinpin.managers.SaveManager;
 import brian.pinpin.nodes.ButtonSprite;
 import org.cocos2d.layers.CCLayer;
 import org.cocos2d.nodes.CCDirector;
+import org.cocos2d.nodes.CCNode;
 import org.cocos2d.nodes.CCSprite;
 import org.cocos2d.types.CGPoint;
+import org.cocos2d.types.CGRect;
 import org.cocos2d.types.CGSize;
 
 class BaseLayer extends CCLayer {
@@ -42,5 +44,9 @@ class BaseLayer extends CCLayer {
         mBackground.setScaleX(mScreenWidth / size.getWidth());
         mBackground.setScaleY(mScreenHeight / size.getHeight());
         addChild(mBackground);
+    }
+
+    boolean contains(CCNode node, CGPoint point) {
+        return CGRect.containsPoint(node.getBoundingBox(), point);
     }
 }

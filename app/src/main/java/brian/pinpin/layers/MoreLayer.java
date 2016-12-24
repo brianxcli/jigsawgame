@@ -56,10 +56,6 @@ public class MoreLayer extends BaseLayer {
         return null;
     }
 
-    private boolean contains(CCSprite sprite, CGPoint event) {
-        return CGRect.containsPoint(sprite.getBoundingBox(), event);
-    }
-
     public boolean ccTouchesBegan(MotionEvent event) {
         ButtonSprite button = findEventButton(event);
         return button != null && button.ccTouchesBegan(event);

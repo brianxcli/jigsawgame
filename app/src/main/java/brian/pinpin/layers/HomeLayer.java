@@ -124,10 +124,6 @@ public class HomeLayer extends BaseLayer {
         return null;
     }
 
-    private boolean contains(CCSprite sprite, CGPoint point) {
-        return CGRect.containsPoint(sprite.getBoundingBox(), point);
-    }
-
     private void toggleSound() {
         if (mSoundManager.isMute()) {
             soundBtn.highlight();
