@@ -19,7 +19,7 @@ import org.cocos2d.nodes.CCSprite;
 import org.cocos2d.types.CGPoint;
 import org.cocos2d.transitions.CCShrinkGrowTransition;
 
-public class HomeLayer extends BaseLayer {
+public class HomeLayer extends BaseLayer implements TouchCallbacks {
     private CCAction titleAction;
     private CCAction cloudAction;
     private CCAction sceneBtn0Action;
@@ -34,7 +34,6 @@ public class HomeLayer extends BaseLayer {
     private ButtonSprite aboutBtn;
     private ButtonSprite sceneBtn0;
     private ButtonSprite sceneBtn1;
-    private HomeLayerTouchCallback callback = new HomeLayerTouchCallback(this);
 
     public HomeLayer() {
         addBackground("root_bg.png");
@@ -191,11 +190,11 @@ public class HomeLayer extends BaseLayer {
 
     public void onEnter() {
         super.onEnter();
-        sceneBtn0.addCallback(callback);
-        sceneBtn1.addCallback(callback);
-        aboutBtn.addCallback(callback);
-        soundBtn.addCallback(callback);
-        moreBtn.addCallback(callback);
+        sceneBtn0.addCallback(this);
+        sceneBtn1.addCallback(this);
+        aboutBtn.addCallback(this);
+        soundBtn.addCallback(this);
+        moreBtn.addCallback(this);
         CCTouchDispatcher.sharedDispatcher().addDelegate(this, 0);
         titleSprite.runAction(titleAction);
         cloudSprite.runAction(cloudAction);
@@ -217,52 +216,44 @@ public class HomeLayer extends BaseLayer {
         sceneBtn1.stopAllActions();
     }
 
-    private static class HomeLayerTouchCallback implements TouchCallbacks {
-        private HomeLayer layer;
-
-        HomeLayerTouchCallback(HomeLayer layer) {
-            this.layer = layer;
+    public boolean onTouchesBegan(MotionEvent event, int tag) {
+        if (tag != soundBtn.getTag()) {
+            mSoundManager.playEffect(mContext, R.raw.sound_button);
         }
+        return true;
+    }
 
-        public boolean onTouchesBegan(MotionEvent event, int tag) {
-            if (tag != layer.soundBtn.getTag()) {
-                layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_button);
-            }
+    public boolean onTouchesEnded(MotionEvent event, int tag) {
+        if (tag == soundBtn.getTag()) {
+            toggleSound();
+            return true;
+        } else if (tag == aboutBtn.getTag()) {
+            CCScene scene = mSceneManager.getScene(SceneManager.SCENE_ABOUT);
+            CCDirector.sharedDirector().replaceScene(CCShrinkGrowTransition.transition(1.0F, scene));
+            mSoundManager.playEffect(mContext, R.raw.sound_ui_switch);
+            return true;
+        } else if (tag == moreBtn.getTag()) {
+            CCScene scene = mSceneManager.getScene(SceneManager.SCENE_MORE);
+            CCDirector.sharedDirector().replaceScene(CCShrinkGrowTransition.transition(1.0F, scene));
+            mSoundManager.playEffect(mContext, R.raw.sound_ui_switch);
+            return true;
+        } else if (tag == sceneBtn0.getTag()) {
+            CCScene scene = mSceneManager.getScene(SceneManager.SCENE_SELECT);
+            ((SelectScene)scene).setSide(0);
+            CCDirector.sharedDirector().replaceScene(CCShrinkGrowTransition.transition(1.0F, scene));
+            mSoundManager.playEffect(mContext, R.raw.sound_ui_switch);
+            return true;
+        } else if (tag == sceneBtn1.getTag()) {
+            CCScene scene = mSceneManager.getScene(SceneManager.SCENE_SELECT);
+            ((SelectScene) scene).setSide(1);
+            CCDirector.sharedDirector().replaceScene(CCShrinkGrowTransition.transition(1.0F, scene));
+            mSoundManager.playEffect(mContext, R.raw.sound_ui_switch);
             return true;
         }
+        return false;
+    }
 
-        public boolean onTouchesEnded(MotionEvent event, int tag) {
-            if (tag == layer.soundBtn.getTag()) {
-                layer.toggleSound();
-                return true;
-            } else if (tag == layer.aboutBtn.getTag()) {
-                CCScene scene = layer.mSceneManager.getScene(SceneManager.SCENE_ABOUT);
-                CCDirector.sharedDirector().replaceScene(CCShrinkGrowTransition.transition(1.0F, scene));
-                layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_ui_switch);
-                return true;
-            } else if (tag == layer.moreBtn.getTag()) {
-                CCScene scene = layer.mSceneManager.getScene(SceneManager.SCENE_MORE);
-                CCDirector.sharedDirector().replaceScene(CCShrinkGrowTransition.transition(1.0F, scene));
-                layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_ui_switch);
-                return true;
-            } else if (tag == layer.sceneBtn0.getTag()) {
-                CCScene scene = layer.mSceneManager.getScene(SceneManager.SCENE_SELECT);
-                ((SelectScene)scene).setSide(0);
-                CCDirector.sharedDirector().replaceScene(CCShrinkGrowTransition.transition(1.0F, scene));
-                layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_ui_switch);
-                return true;
-            } else if (tag == layer.sceneBtn1.getTag()) {
-                CCScene scene = layer.mSceneManager.getScene(SceneManager.SCENE_SELECT);
-                ((SelectScene) scene).setSide(1);
-                CCDirector.sharedDirector().replaceScene(CCShrinkGrowTransition.transition(1.0F, scene));
-                layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_ui_switch);
-                return true;
-            }
-            return false;
-        }
-
-        public boolean onTouchesCancelled(MotionEvent event, int tag) {
-            return false;
-        }
+    public boolean onTouchesCancelled(MotionEvent event, int tag) {
+        return false;
     }
 }
