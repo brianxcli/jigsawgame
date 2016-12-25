@@ -31,9 +31,10 @@ public class PublicUtils {
             for (int i = 0; i < split; i++) {
                 for (int j = 0; j < split; j++) {
                     Bitmap bm = Bitmap.createBitmap(bitmap, (int)(i * blockW), (int)(j * blockH), (int)blockW, (int)blockH);
-                    sprites[i][j] = CCSprite.sprite(bm, id + "");
+                    sprites[i][j] = CCSprite.sprite(bm, res + '|' + id);
                     ids[i][j] = id++;
                     bm.recycle();
+                    bm = null;
                 }
             }
         } catch (IOException e) {
