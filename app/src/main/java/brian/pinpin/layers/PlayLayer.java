@@ -5,7 +5,7 @@ import android.view.MotionEvent;
 import brian.pinpin.R;
 import brian.pinpin.managers.SceneManager;
 import brian.pinpin.nodes.ButtonSprite;
-import brian.pinpin.events.TouchDelegateProtocol;
+import brian.pinpin.events.TouchCallbacks;
 import brian.pinpin.scenes.IBaseScene;
 import brian.pinpin.scenes.SelectScene;
 import brian.pinpin.utils.PublicUtils;
@@ -900,7 +900,7 @@ public class PlayLayer extends BaseLayer {
         }
     }
 
-    private static class PlayLayerCallback implements TouchDelegateProtocol {
+    private static class PlayLayerCallback implements TouchCallbacks {
         private PlayLayer layer;
 
         PlayLayerCallback(PlayLayer layer) {

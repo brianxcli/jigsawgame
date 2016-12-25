@@ -5,7 +5,7 @@ import android.view.MotionEvent;
 import brian.pinpin.R;
 import brian.pinpin.managers.SceneManager;
 import brian.pinpin.nodes.ButtonSprite;
-import brian.pinpin.events.TouchDelegateProtocol;
+import brian.pinpin.events.TouchCallbacks;
 import brian.pinpin.scenes.IBaseScene;
 import brian.pinpin.scenes.PlayScene;
 
@@ -14,7 +14,6 @@ import org.cocos2d.events.CCTouchDispatcher;
 import org.cocos2d.nodes.CCDirector;
 import org.cocos2d.nodes.CCNode;
 import org.cocos2d.types.CGPoint;
-import org.cocos2d.types.CGRect;
 import org.cocos2d.transitions.CCShrinkGrowTransition;
 
 public class SelectLayer extends BaseLayer {
@@ -116,7 +115,7 @@ public class SelectLayer extends BaseLayer {
         CCTouchDispatcher.sharedDispatcher().removeDelegate(this);
     }
 
-    private static class SelectLayerCallback implements TouchDelegateProtocol {
+    private static class SelectLayerCallback implements TouchCallbacks {
         private SelectLayer layer;
 
         SelectLayerCallback(SelectLayer layer) {

@@ -2,13 +2,12 @@ package brian.pinpin.layers;
 
 import android.view.MotionEvent;
 import brian.pinpin.R;
-import brian.pinpin.events.TouchDelegateProtocol;
+import brian.pinpin.events.TouchCallbacks;
 import brian.pinpin.managers.SceneManager;
 import brian.pinpin.nodes.ButtonSprite;
 import brian.pinpin.scenes.SelectScene;
 import java.util.List;
 import org.cocos2d.actions.base.CCAction;
-import org.cocos2d.actions.base.CCFiniteTimeAction;
 import org.cocos2d.actions.interval.CCMoveTo;
 import org.cocos2d.actions.interval.CCRepeat;
 import org.cocos2d.actions.interval.CCSequence;
@@ -18,7 +17,6 @@ import org.cocos2d.nodes.CCDirector;
 import org.cocos2d.nodes.CCNode;
 import org.cocos2d.nodes.CCSprite;
 import org.cocos2d.types.CGPoint;
-import org.cocos2d.types.CGRect;
 import org.cocos2d.transitions.CCShrinkGrowTransition;
 
 public class HomeLayer extends BaseLayer {
@@ -219,7 +217,7 @@ public class HomeLayer extends BaseLayer {
         sceneBtn1.stopAllActions();
     }
 
-    private static class HomeLayerTouchCallback implements TouchDelegateProtocol {
+    private static class HomeLayerTouchCallback implements TouchCallbacks {
         private HomeLayer layer;
 
         HomeLayerTouchCallback(HomeLayer layer) {

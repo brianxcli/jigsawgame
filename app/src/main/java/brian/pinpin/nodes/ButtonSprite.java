@@ -1,7 +1,7 @@
 package brian.pinpin.nodes;
 
 import android.view.MotionEvent;
-import brian.pinpin.events.TouchDelegateProtocol;
+import brian.pinpin.events.TouchCallbacks;
 import javax.microedition.khronos.opengles.GL10;
 import org.cocos2d.nodes.CCDirector;
 import org.cocos2d.nodes.CCSprite;
@@ -13,7 +13,7 @@ public class ButtonSprite extends CCSprite implements CCTouchDelegateProtocol {
     private CCSprite mHighlightSprite;
     private boolean isHighlight = false;
     private boolean isEnable = true;
-    private TouchDelegateProtocol protocol;
+    private TouchCallbacks protocol;
 
     protected ButtonSprite(String normalRes, String highlightRes) {
         super(normalRes);
@@ -38,7 +38,7 @@ public class ButtonSprite extends CCSprite implements CCTouchDelegateProtocol {
         return CGRect.containsPoint(getBoundingBox(), point);
     }
 
-    public void addCallback(TouchDelegateProtocol protocol) {
+    public void addCallback(TouchCallbacks protocol) {
         this.protocol = protocol;
     }
 

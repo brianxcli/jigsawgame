@@ -3,16 +3,14 @@ package brian.pinpin.layers;
 import android.view.MotionEvent;
 
 import brian.pinpin.R;
-import brian.pinpin.events.TouchDelegateProtocol;
+import brian.pinpin.events.TouchCallbacks;
 import brian.pinpin.managers.SceneManager;
 import brian.pinpin.nodes.ButtonSprite;
 import brian.pinpin.scenes.IBaseScene;
 
 import org.cocos2d.events.CCTouchDispatcher;
 import org.cocos2d.nodes.CCDirector;
-import org.cocos2d.nodes.CCSprite;
 import org.cocos2d.types.CGPoint;
-import org.cocos2d.types.CGRect;
 
 public class AboutLayer extends BaseLayer {
     private AboutLayerCallback callback;
@@ -59,7 +57,7 @@ public class AboutLayer extends BaseLayer {
         CCTouchDispatcher.sharedDispatcher().removeDelegate(this);
     }
 
-    private static class AboutLayerCallback implements TouchDelegateProtocol {
+    private static class AboutLayerCallback implements TouchCallbacks {
         private AboutLayer layer;
 
         AboutLayerCallback(AboutLayer layer) {
