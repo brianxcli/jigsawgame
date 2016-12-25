@@ -114,7 +114,7 @@ public class HomeLayer extends BaseLayer implements TouchCallbacks {
         List<CCNode> nodes = getChildren();
 
         for (CCNode node : nodes) {
-            if (node instanceof ButtonSprite && contains((ButtonSprite)node, point)) {
+            if (node instanceof ButtonSprite && contains(node, point)) {
                 return (ButtonSprite)node;
             }
         }
