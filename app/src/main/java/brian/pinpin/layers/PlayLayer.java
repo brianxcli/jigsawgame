@@ -27,7 +27,7 @@ import org.cocos2d.nodes.CCSprite;
 import org.cocos2d.types.CGPoint;
 import org.cocos2d.types.CGSize;
 
-public class PlayLayer extends BaseLayer {
+public class PlayLayer extends BaseLayer implements TouchCallbacks {
     private final int[][] mTrialsNums = new int[][]{{3, 4, 4, 3, 3, 4, 3}, {3, 3, 3, 3, 3, 3, 4}};
     private static final int TAG_BLACKBOARD = 2;
     private static final int TAG_MAGIC_WAND = 3;
@@ -74,12 +74,9 @@ public class PlayLayer extends BaseLayer {
     private int mLastPointerId;
     private CCSprite mSwitchTarget;
 
-    private PlayLayerCallback callback;
-
     public PlayLayer(int side, int number) {
         mSide = side;
         mNumber = number;
-        callback = new PlayLayerCallback(this);
 
         this.U = -1;
         this.V = -1;
@@ -320,7 +317,7 @@ public class PlayLayer extends BaseLayer {
             if (i <= passedNum) {
                 mTrialIcons[i] = ButtonSprite.create(mStageIconRes[i][0], mStageIconRes[i][1]);
                 mTrialIcons[i].setPosition(trialPos[i]);
-                ((ButtonSprite)mTrialIcons[i]).addCallback(callback);
+                ((ButtonSprite)mTrialIcons[i]).addCallback(this);
                 addChild(mTrialIcons[i], 0, TAG_TRIAL_ICONS[i]);
             } else {
                 mTrialIcons[i] = CCSprite.sprite("lock.png");
@@ -724,28 +721,36 @@ public class PlayLayer extends BaseLayer {
         mSaveManager.setPassedCount(mSide, mNumber, passedNum);
         mSaveManager.setCompleted(mOriginPics[mCurrentTrial - 1][0], true);
 
-        removeAllFragments();
-
         if (mOriginalBig != null) {
             mOriginalBig.setVisible(true);
             mOriginalBig.runAction(CCSequence.actions(
                     CCBlink.action(1.0F, 2),
-                    CCCallFunc.action(this, "originAppear"),
+                    CCCallFunc.action(this, "originDisappear"),
+                    CCCallFunc.action(this, "nextTrial"),
                     CCCallFunc.action(this, "setTouchIdle")));
         }
+
+    }
+
+    public void nextTrial() {
+        removeAllFragments();
+        removeTrialIcons();
+        removeOriginPic();
+        removeStars();
 
         int total = mTrialsNums[mSide][mNumber];
         if (mCurrentTrial == passedNum + 1 && mCurrentTrial < total) {
             passedNum++;
         }
 
-        removeTrialIcons();
-
         if (mCurrentTrial < total) {
             mCurrentTrial++;
         }
 
         initTrialIconSprites();
+        initOriginIcon();
+        initStars();
+        playOriginalHint();
     }
 
     private void removeAllFragments() {
@@ -757,9 +762,11 @@ public class PlayLayer extends BaseLayer {
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < length; ++j) {
                 removeChild(mFragments[i][j], true);
-                mFragments[i][j] = null;
+                // mFragments[i][j] = null;
             }
         }
+
+        // mFragments = null;
     }
 
     private void removeTrialIcons() {
@@ -796,16 +803,16 @@ public class PlayLayer extends BaseLayer {
     public void onEnter() {
         super.onEnter();
         if (backBtn != null) {
-            backBtn.addCallback(callback);
+            backBtn.addCallback(this);
         }
 
         if (mMagicWand != null) {
-            mMagicWand.addCallback(callback);
+            mMagicWand.addCallback(this);
             mMagicWand.runAction(mMagicWandAction);
         }
 
         if (mMagnifier != null) {
-            mMagnifier.addCallback(callback);
+            mMagnifier.addCallback(this);
         }
 
         CCTouchDispatcher.sharedDispatcher().addDelegate(this, 0);
@@ -890,59 +897,51 @@ public class PlayLayer extends BaseLayer {
         }
     }
 
-    private static class PlayLayerCallback implements TouchCallbacks {
-        private PlayLayer layer;
+    public boolean onTouchesBegan(MotionEvent event, int tag) {
+        return true;
+    }
 
-        PlayLayerCallback(PlayLayer layer) {
-            this.layer = layer;
-        }
-
-        public boolean onTouchesBegan(MotionEvent event, int tag) {
-            return true;
-        }
-
-        public boolean onTouchesEnded(MotionEvent event, int tag) {
-            if (tag == BACK_ID) {
-                layer.mSoundManager.playEffect(layer.mContext, brian.pinpin.R.raw.sound_back_to_prev);
-                layer.mSaveManager.setPassedCount(layer.mSide, layer.mNumber, layer.passedNum);
-                SelectScene scene = (SelectScene) layer.mSceneManager.getScene(SceneManager.SCENE_SELECT);
-                scene.setSide(layer.getDifficulty(layer.mSide));
-                CCDirector.sharedDirector().replaceScene(scene);
-                ((IBaseScene)layer.getParent()).cleanupScene();
-            } else if (tag == layer.mMagicWand.getTag()) {
-                layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_wand_reset);
-                layer.removeAllFragments();
-                layer.addFragments();
-            } else if (PlayLayer.TAG_TRIAL_ICONS[0] <= tag &&
-                    tag <= PlayLayer.TAG_TRIAL_ICONS[PlayLayer.TAG_TRIAL_ICONS.length - 1]) {
-                int index = 0;
-                for (; index < layer.mTrialIcons.length; index++) {
-                    if (tag == layer.mTrialIcons[index].getTag()) {
-                        break;
-                    }
+    public boolean onTouchesEnded(MotionEvent event, int tag) {
+        if (tag == BACK_ID) {
+            mSoundManager.playEffect(mContext, R.raw.sound_back_to_prev);
+            mSaveManager.setPassedCount(mSide, mNumber, passedNum);
+            SelectScene scene = (SelectScene) mSceneManager.getScene(SceneManager.SCENE_SELECT);
+            scene.setSide(getDifficulty(mSide));
+            CCDirector.sharedDirector().replaceScene(scene);
+            ((IBaseScene)getParent()).cleanupScene();
+        } else if (tag == mMagicWand.getTag()) {
+            mSoundManager.playEffect(mContext, R.raw.sound_wand_reset);
+            removeAllFragments();
+            addFragments();
+        } else if (PlayLayer.TAG_TRIAL_ICONS[0] <= tag &&
+                tag <= PlayLayer.TAG_TRIAL_ICONS[PlayLayer.TAG_TRIAL_ICONS.length - 1]) {
+            int index = 0;
+            for (; index < mTrialIcons.length; index++) {
+                if (tag == mTrialIcons[index].getTag()) {
+                    break;
                 }
-
-                if (index <= layer.passedNum) {
-                    layer.removeOriginPic();
-                    layer.removeStars();
-                    layer.removeAllFragments();
-                    layer.mCurrentTrial = index + 1;
-                    layer.initOriginIcon();
-                    layer.initStars();
-                    layer.playOriginalHint();
-                }
-            } else if (tag == layer.mMagnifier.getTag()) {
-                layer.mGrayBg.setVisible(true);
-                layer.reorderChild(layer.mGrayBg, 4);
-                layer.mOriginalBig.setVisible(true);
-                layer.reorderChild(layer.mOriginalBig, 4);
             }
 
-            return true;
+            if (index <= passedNum) {
+                removeOriginPic();
+                removeStars();
+                removeAllFragments();
+                mCurrentTrial = index + 1;
+                initOriginIcon();
+                initStars();
+                playOriginalHint();
+            }
+        } else if (tag == mMagnifier.getTag()) {
+            mGrayBg.setVisible(true);
+            reorderChild(mGrayBg, 4);
+            mOriginalBig.setVisible(true);
+            reorderChild(mOriginalBig, 4);
         }
 
-        public boolean onTouchesCancelled(MotionEvent event, int tag) {
-            return false;
-        }
+        return true;
+    }
+
+    public boolean onTouchesCancelled(MotionEvent event, int tag) {
+        return false;
     }
 }
