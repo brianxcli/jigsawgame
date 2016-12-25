@@ -388,21 +388,13 @@ public class PlayLayer extends BaseLayer {
     }
 
     private void playOriginalHint() {
-        boolean complete = mSaveManager.isCompleted(mOriginPics[mCurrentTrial - 1][0]);
         setTouchDisable();
-        if (complete) {
-            mOriginalBig.runAction(CCSequence.actions(
-                CCBlink.action(1.5F, 3),
-                CCCallFunc.action(this, "originAppear"),
-                CCCallFunc.action(this, "setTouchIdle")));
-        } else {
-            mOriginalBig.runAction(CCSequence.actions(
-                CCBlink.action(1.5F, 3),
-                CCCallFunc.action(this, "originDisappear"),
-                CCCallFunc.action(this, "playResetEffect"),
-                CCCallFunc.action(this, "addFragments"),
-                CCCallFunc.action(this, "setTouchIdle")));
-        }
+        mOriginalBig.runAction(CCSequence.actions(
+            CCBlink.action(1.5F, 3),
+            CCCallFunc.action(this, "originDisappear"),
+            CCCallFunc.action(this, "playResetEffect"),
+            CCCallFunc.action(this, "addFragments"),
+            CCCallFunc.action(this, "setTouchIdle")));
     }
 
     private int getDifficulty(int stage) {
@@ -508,8 +500,6 @@ public class PlayLayer extends BaseLayer {
         }
 
         mFragments = ranFrags;
-//        mFragTagLow = mFragments[0][0].getTag();
-//        mFragTagHigh = mFragments[split - 1][split - 1].getTag();
     }
 
     private void swapFragments(int oriIdxX, int oriIdxY, int tarIdxX, int tarIdxY) {
@@ -939,7 +929,6 @@ public class PlayLayer extends BaseLayer {
                     layer.mCurrentTrial = index + 1;
                     layer.initOriginIcon();
                     layer.initStars();
-                    // layer.initOriginSize();
                     layer.playOriginalHint();
                 }
             } else if (tag == layer.mMagnifier.getTag()) {
