@@ -16,16 +16,14 @@ import org.cocos2d.nodes.CCNode;
 import org.cocos2d.types.CGPoint;
 import org.cocos2d.transitions.CCShrinkGrowTransition;
 
-public class SelectLayer extends BaseLayer {
+public class SelectLayer extends BaseLayer implements TouchCallbacks {
     private static final int ANIMAL_PER_SCENE = 7;
 
     private ButtonSprite[] mTrials = new ButtonSprite[ANIMAL_PER_SCENE];
-    private SelectLayerCallback callback;
     private int mType = -1;
 
     public SelectLayer(int type) {
         mType = type;
-        callback = new SelectLayerCallback(this);
         initViews(type);
         playBgMusic();
     }
@@ -53,7 +51,7 @@ public class SelectLayer extends BaseLayer {
         addBackground(scene + ".png");
         backBtn = ButtonSprite.create("back.png", "back_sel.png");
         backBtn.setPosition(mBackPos);
-        addChild(backBtn, 2, BaseLayer.BACK_ID);
+        addChild(backBtn, 2, BACK_ID);
 
         for (int i = 0; i < ANIMAL_PER_SCENE; i++) {
             mTrials[i] = ButtonSprite.create(scene + "Play" + i + ".png", scene + "PlayHighlight" + i + ".png");
@@ -71,7 +69,7 @@ public class SelectLayer extends BaseLayer {
 
     private void addAnimalCallbacks() {
         for (int i = 0; i < ANIMAL_PER_SCENE; i++) {
-            mTrials[i].addCallback(callback);
+            mTrials[i].addCallback(this);
         }
     }
 
@@ -103,7 +101,7 @@ public class SelectLayer extends BaseLayer {
 
     public void onEnter() {
         super.onEnter();
-        backBtn.addCallback(callback);
+        backBtn.addCallback(this);
         addAnimalCallbacks();
         CCTouchDispatcher.sharedDispatcher().addDelegate(this, 0);
     }
@@ -115,110 +113,102 @@ public class SelectLayer extends BaseLayer {
         CCTouchDispatcher.sharedDispatcher().removeDelegate(this);
     }
 
-    private static class SelectLayerCallback implements TouchCallbacks {
-        private SelectLayer layer;
-
-        SelectLayerCallback(SelectLayer layer) {
-            this.layer = layer;
-        }
-
-        public boolean onTouchesBegan(MotionEvent event, int tag) {
-            if (BaseLayer.BACK_ID == tag) {
+    public boolean onTouchesBegan(MotionEvent event, int tag) {
+        if (BACK_ID == tag) {
+            return true;
+        } else if (mType == 0) {
+            if (0 == tag) {
+                mSoundManager.playEffect(mContext, R.raw.sound_role_deer);
                 return true;
-            } else if (layer.mType == 0) {
-                if (0 == tag) {
-                    layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_role_deer);
-                    return true;
-                }
-
-                if (1 == tag) {
-                    layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_role_butterfly);
-                    return true;
-                }
-
-                if (2 == tag) {
-                    layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_role_lion);
-                    return true;
-                }
-
-                if (3 == tag) {
-                    layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_role_panda);
-                    return true;
-                }
-
-                if (4 == tag) {
-                    layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_role_snake);
-                    return true;
-                }
-
-                if (5 == tag) {
-                    layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_role_frog);
-                    return true;
-                }
-
-                if (6 == tag) {
-                    layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_role_turtle);
-                    return true;
-                }
-            } else if (layer.mType == 1) {
-                if (0 == tag) {
-                    layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_role_goat);
-                    return true;
-                }
-
-                if (1 == tag) {
-                    layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_role_cattle);
-                    return true;
-                }
-
-                if (2 == tag) {
-                    layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_role_goose);
-                    return true;
-                }
-
-                if (3 == tag) {
-                    layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_role_horse);
-                    return true;
-                }
-
-                if (4 == tag) {
-                    layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_role_pig);
-                    return true;
-                }
-
-                if (5 == tag) {
-                    layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_role_duck);
-                    return true;
-                }
-
-                if (6 == tag) {
-                    layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_role_rooster);
-                    return true;
-                }
             }
 
-            return false;
-        }
+            if (1 == tag) {
+                mSoundManager.playEffect(mContext, R.raw.sound_role_butterfly);
+                return true;
+            }
 
-        public boolean onTouchesEnded(MotionEvent event, int tag) {
-            if (tag == BaseLayer.BACK_ID) {
-                layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_back_to_prev);
-                CCDirector.sharedDirector().replaceScene(layer.mSceneManager.getScene(SceneManager.SCENE_HOME));
-                ((IBaseScene)layer.getParent()).cleanupScene();
+            if (2 == tag) {
+                mSoundManager.playEffect(mContext, R.raw.sound_role_lion);
                 return true;
-            } else if (layer.mTrials[0].getTag() <= tag && tag <= layer.mTrials[ANIMAL_PER_SCENE - 1].getTag()) {
-                PlayScene scene = (PlayScene)layer.mSceneManager.getScene(SceneManager.SCENE_PLAY);
-                scene.setPlayLayer(layer.mType, tag);
-                CCDirector.sharedDirector().replaceScene(CCShrinkGrowTransition.transition(1.0F, scene));
-                ((IBaseScene)layer.getParent()).cleanupScene();
+            }
+
+            if (3 == tag) {
+                mSoundManager.playEffect(mContext, R.raw.sound_role_panda);
                 return true;
-            } else {
-                return false;
+            }
+
+            if (4 == tag) {
+                mSoundManager.playEffect(mContext, R.raw.sound_role_snake);
+                return true;
+            }
+
+            if (5 == tag) {
+                mSoundManager.playEffect(mContext, R.raw.sound_role_frog);
+                return true;
+            }
+
+            if (6 == tag) {
+                mSoundManager.playEffect(mContext, R.raw.sound_role_turtle);
+                return true;
+            }
+        } else if (mType == 1) {
+            if (0 == tag) {
+                mSoundManager.playEffect(mContext, R.raw.sound_role_goat);
+                return true;
+            }
+
+            if (1 == tag) {
+                mSoundManager.playEffect(mContext, R.raw.sound_role_cattle);
+                return true;
+            }
+
+            if (2 == tag) {
+                mSoundManager.playEffect(mContext, R.raw.sound_role_goose);
+                return true;
+            }
+
+            if (3 == tag) {
+                mSoundManager.playEffect(mContext, R.raw.sound_role_horse);
+                return true;
+            }
+
+            if (4 == tag) {
+                mSoundManager.playEffect(mContext, R.raw.sound_role_pig);
+                return true;
+            }
+
+            if (5 == tag) {
+                mSoundManager.playEffect(mContext, R.raw.sound_role_duck);
+                return true;
+            }
+
+            if (6 == tag) {
+                mSoundManager.playEffect(mContext, R.raw.sound_role_rooster);
+                return true;
             }
         }
 
-        public boolean onTouchesCancelled(MotionEvent event, int tag) {
+        return false;
+    }
+
+    public boolean onTouchesEnded(MotionEvent event, int tag) {
+        if (tag == BACK_ID) {
+            mSoundManager.playEffect(mContext, R.raw.sound_back_to_prev);
+            CCDirector.sharedDirector().replaceScene(mSceneManager.getScene(SceneManager.SCENE_HOME));
+            ((IBaseScene)getParent()).cleanupScene();
+            return true;
+        } else if (mTrials[0].getTag() <= tag && tag <= mTrials[ANIMAL_PER_SCENE - 1].getTag()) {
+            PlayScene scene = (PlayScene)mSceneManager.getScene(SceneManager.SCENE_PLAY);
+            scene.setPlayLayer(mType, tag);
+            CCDirector.sharedDirector().replaceScene(CCShrinkGrowTransition.transition(1.0F, scene));
+            ((IBaseScene)getParent()).cleanupScene();
+            return true;
+        } else {
             return false;
         }
+    }
+
+    public boolean onTouchesCancelled(MotionEvent event, int tag) {
+        return false;
     }
 }
