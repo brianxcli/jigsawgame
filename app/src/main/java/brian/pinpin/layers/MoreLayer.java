@@ -15,13 +15,12 @@ import org.cocos2d.nodes.CCDirector;
 import org.cocos2d.nodes.CCNode;
 import org.cocos2d.types.CGPoint;
 
-public class MoreLayer extends BaseLayer {
+public class MoreLayer extends BaseLayer implements TouchCallbacks {
     private static final int TAG_PAIPAI = 2;
     private static final int TAG_COLOR = 3;
 
     private ButtonSprite mPaipaiBtn;
     private ButtonSprite mColorBtn;
-    private MoreLayerCallback mCallback;
 
     public MoreLayer() {
         addBackground("more_bg.png");
@@ -46,7 +45,7 @@ public class MoreLayer extends BaseLayer {
 
         List<CCNode> children = getChildren();
         for (CCNode node : children) {
-            if (node instanceof ButtonSprite && contains((ButtonSprite)node, point)) {
+            if (node instanceof ButtonSprite && contains(node, point)) {
                 return (ButtonSprite)node;
             }
         }
@@ -76,10 +75,9 @@ public class MoreLayer extends BaseLayer {
 
     public void onEnter() {
         super.onEnter();
-        mCallback = new MoreLayerCallback(this);
-        mPaipaiBtn.addCallback(mCallback);
-        mColorBtn.addCallback(mCallback);
-        backBtn.addCallback(mCallback);
+        mPaipaiBtn.addCallback(this);
+        mColorBtn.addCallback(this);
+        backBtn.addCallback(this);
         CCTouchDispatcher.sharedDispatcher().addDelegate(this, 0);
         playBgMusic();
     }
@@ -93,34 +91,23 @@ public class MoreLayer extends BaseLayer {
         mPaipaiBtn.removeCallBack();
         mColorBtn.removeCallBack();
         backBtn.removeCallBack();
-        mCallback = null;
         CCTouchDispatcher.sharedDispatcher().removeDelegate(this);
     }
 
-    private static class MoreLayerCallback implements TouchCallbacks {
-        private MoreLayer layer;
-
-        MoreLayerCallback(MoreLayer layer) {
-            this.layer = layer;
-        }
-
-        public boolean onTouchesBegan(MotionEvent event, int tag) {
-            return false;
-        }
-
-        public boolean onTouchesEnded(MotionEvent event, int tag) {
-            if (tag == layer.backBtn.getTag()) {
-                layer.mSoundManager.playEffect(layer.mContext, R.raw.sound_back_to_prev);
-                CCScene scene = layer.mSceneManager.getScene(SceneManager.SCENE_HOME);
-                CCDirector.sharedDirector().replaceScene(scene);
-                ((IBaseScene)layer.getParent()).cleanupScene();
-                return true;
-            }
-            return false;
-        }
-
-        public boolean onTouchesCancelled(MotionEvent event, int tag) {
-            return false;
-        }
+    public boolean onTouchesBegan(MotionEvent event, int tag) {
+        return false;
     }
+
+    public boolean onTouchesEnded(MotionEvent event, int tag) {
+        if (tag == backBtn.getTag()) {
+            mSoundManager.playEffect(mContext, R.raw.sound_back_to_prev);
+            CCScene scene = mSceneManager.getScene(SceneManager.SCENE_HOME);
+            CCDirector.sharedDirector().replaceScene(scene);
+            ((IBaseScene)getParent()).cleanupScene();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean onTouchesCancelled(MotionEvent event, int tag) { return false; }
 }
