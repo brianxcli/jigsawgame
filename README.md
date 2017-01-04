@@ -1,7 +1,7 @@
 # jigsawgame
 ### Issues and lessons learned
 <p>1. When adding the background, scaling the background picture is needed to adjust to different screen sizes. But calling setScaleX() and setScaleY() doesn't work if we use addChild(child, z-index, tag). Instead, we use addChild(child).</p>
-<p>Reason: </p>
+<p>Reason: not specified yet.</p>
 <p>2. Game crashes when unmute the sound.</p>
 <p>Related code is in org.cocos2d.sound.SoundEngine. When the engine unmutes the sound, it just resume the original volumns saved in the variables, prevEffectsVolumn and prevSoundsVolumn, of type Float which are not initialized when the engine starts and when it mutes the sounds and effects. We should set a value, say 1.0, to both of the variables using setSoundVolumn() and setEffectsVolumn().</p>
 <p>3. Before the sprites fade in, set their opacity to zero.</p>
