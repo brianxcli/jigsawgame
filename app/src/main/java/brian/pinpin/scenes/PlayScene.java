@@ -24,6 +24,6 @@ public class PlayScene extends CCScene implements IBaseScene {
     }
 
     public void cleanupScene() {
-        removeSelf();
+        // removeSelf();
     }
 }

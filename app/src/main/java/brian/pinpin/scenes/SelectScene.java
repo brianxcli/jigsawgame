@@ -21,6 +21,6 @@ public class SelectScene extends CCScene implements IBaseScene {
     }
 
     public void cleanupScene() {
-        removeSelf();
+        // removeSelf();
     }
 }

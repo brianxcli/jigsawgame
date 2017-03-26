@@ -61,7 +61,7 @@ public class AboutLayer extends BaseLayer implements TouchCallbacks {
     public boolean onTouchesEnded(MotionEvent event, int tag) {
         if (tag == backBtn.getTag()) {
             mSoundManager.playEffect(mContext, R.raw.sound_back_to_prev);
-            CCDirector.sharedDirector().replaceScene(mSceneManager.getScene(SceneManager.SCENE_HOME));
+            CCDirector.sharedDirector().popScene();
             ((IBaseScene)getParent()).cleanupScene();
             return true;
         } else {

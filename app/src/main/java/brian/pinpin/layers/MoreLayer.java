@@ -101,8 +101,7 @@ public class MoreLayer extends BaseLayer implements TouchCallbacks {
     public boolean onTouchesEnded(MotionEvent event, int tag) {
         if (tag == backBtn.getTag()) {
             mSoundManager.playEffect(mContext, R.raw.sound_back_to_prev);
-            CCScene scene = mSceneManager.getScene(SceneManager.SCENE_HOME);
-            CCDirector.sharedDirector().replaceScene(scene);
+            CCDirector.sharedDirector().popScene();;
             ((IBaseScene)getParent()).cleanupScene();
             return true;
         }

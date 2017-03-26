@@ -15,6 +15,6 @@ public class HomeScene extends CCScene implements IBaseScene {
     }
 
     public void cleanupScene() {
-        removeSelf();
+        // removeSelf();
     }
 }

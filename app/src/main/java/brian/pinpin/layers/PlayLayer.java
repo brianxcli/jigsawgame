@@ -905,9 +905,7 @@ public class PlayLayer extends BaseLayer implements TouchCallbacks {
         if (tag == BACK_ID) {
             mSoundManager.playEffect(mContext, R.raw.sound_back_to_prev);
             mSaveManager.setPassedCount(mSide, mNumber, passedNum);
-            SelectScene scene = (SelectScene) mSceneManager.getScene(SceneManager.SCENE_SELECT);
-            scene.setSide(getDifficulty(mSide));
-            CCDirector.sharedDirector().replaceScene(scene);
+            CCDirector.sharedDirector().popScene();
             ((IBaseScene)getParent()).cleanupScene();
         } else if (tag == mMagicWand.getTag()) {
             mSoundManager.playEffect(mContext, R.raw.sound_wand_reset);

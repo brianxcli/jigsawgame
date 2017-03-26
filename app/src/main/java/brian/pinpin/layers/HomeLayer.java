@@ -229,24 +229,24 @@ public class HomeLayer extends BaseLayer implements TouchCallbacks {
             return true;
         } else if (tag == aboutBtn.getTag()) {
             CCScene scene = mSceneManager.getScene(SceneManager.SCENE_ABOUT);
-            CCDirector.sharedDirector().replaceScene(CCShrinkGrowTransition.transition(1.0F, scene));
+            CCDirector.sharedDirector().pushScene(CCShrinkGrowTransition.transition(1.0F, scene));
             mSoundManager.playEffect(mContext, R.raw.sound_ui_switch);
             return true;
         } else if (tag == moreBtn.getTag()) {
             CCScene scene = mSceneManager.getScene(SceneManager.SCENE_MORE);
-            CCDirector.sharedDirector().replaceScene(CCShrinkGrowTransition.transition(1.0F, scene));
+            CCDirector.sharedDirector().pushScene(CCShrinkGrowTransition.transition(1.0F, scene));
             mSoundManager.playEffect(mContext, R.raw.sound_ui_switch);
             return true;
         } else if (tag == sceneBtn0.getTag()) {
             CCScene scene = mSceneManager.getScene(SceneManager.SCENE_SELECT);
             ((SelectScene)scene).setSide(0);
-            CCDirector.sharedDirector().replaceScene(CCShrinkGrowTransition.transition(1.0F, scene));
+            CCDirector.sharedDirector().pushScene(CCShrinkGrowTransition.transition(1.0F, scene));
             mSoundManager.playEffect(mContext, R.raw.sound_ui_switch);
             return true;
         } else if (tag == sceneBtn1.getTag()) {
             CCScene scene = mSceneManager.getScene(SceneManager.SCENE_SELECT);
             ((SelectScene) scene).setSide(1);
-            CCDirector.sharedDirector().replaceScene(CCShrinkGrowTransition.transition(1.0F, scene));
+            CCDirector.sharedDirector().pushScene(CCShrinkGrowTransition.transition(1.0F, scene));
             mSoundManager.playEffect(mContext, R.raw.sound_ui_switch);
             return true;
         }
