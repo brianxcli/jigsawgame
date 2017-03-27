@@ -16,24 +16,32 @@ import org.cocos2d.types.CGRect;
 import org.cocos2d.types.CGSize;
 
 class BaseLayer extends CCLayer {
+    protected static float SCALING;
     static final int BACK_ID = -2;
 
     CCSprite mBackground;
     ButtonSprite backBtn;
-    CGPoint mBackPos = CGPoint.make(90.0F, 100.0F);
+    CGPoint mLeftFuncBtnPos;
+    CGPoint mRightFuncBtnPos;
+    CGPoint mMiddleFuncBtnPos;
     Context mContext = CCDirector.sharedDirector().getActivity().getApplicationContext();
     SoundManager mSoundManager = (SoundManager) ManagerService.getInstance().getService(ManagerService.SOUND_MANAGER);
     SceneManager mSceneManager = (SceneManager) ManagerService.getInstance().getService(ManagerService.SCENE_MANAGER);
     SaveManager mSaveManager = (SaveManager) ManagerService.getInstance().getService(ManagerService.SAVE_MANAGER);
+
     int mScreenWidth;
     int mScreenHeight;
     float centerHorizontal;
 
     BaseLayer() {
         mSaveManager.setContext(mContext);
-        mScreenWidth = SceneManager.sceneWidth;
-        mScreenHeight = SceneManager.sceneHeight;
+        mScreenWidth = SceneManager.SCREEN_WIDTH;
+        mScreenHeight = SceneManager.SCREEN_HEIGHT;
         centerHorizontal = (float) mScreenWidth / 2.0F;
+        SCALING = mSceneManager.getScalingFactor();
+        mLeftFuncBtnPos = CGPoint.make(30.0F * SCALING, 30.0F * SCALING);
+        mMiddleFuncBtnPos = CGPoint.make(centerHorizontal, 30.0F * SCALING);
+        mRightFuncBtnPos = CGPoint.make(mScreenWidth - 30.0F * SCALING, 30.0F * SCALING);
     }
 
     void addBackground(String res) {

@@ -5,6 +5,8 @@ import brian.pinpin.R;
 import brian.pinpin.events.TouchCallbacks;
 import brian.pinpin.managers.SceneManager;
 import brian.pinpin.nodes.ButtonSprite;
+import brian.pinpin.nodes.ScaledButtonSprite;
+import brian.pinpin.nodes.ScaledSprite;
 import brian.pinpin.scenes.SelectScene;
 import java.util.List;
 import org.cocos2d.actions.base.CCAction;
@@ -15,7 +17,6 @@ import org.cocos2d.events.CCTouchDispatcher;
 import org.cocos2d.layers.CCScene;
 import org.cocos2d.nodes.CCDirector;
 import org.cocos2d.nodes.CCNode;
-import org.cocos2d.nodes.CCSprite;
 import org.cocos2d.types.CGPoint;
 import org.cocos2d.transitions.CCShrinkGrowTransition;
 
@@ -27,13 +28,14 @@ public class HomeLayer extends BaseLayer implements TouchCallbacks {
 
     private int lastTouched;
     private int index = 0;
-    private CCSprite titleSprite;
-    private CCSprite cloudSprite;
-    private ButtonSprite moreBtn;
-    private ButtonSprite soundBtn;
-    private ButtonSprite aboutBtn;
-    private ButtonSprite sceneBtn0;
-    private ButtonSprite sceneBtn1;
+
+    private ScaledSprite titleSprite;
+    private ScaledSprite cloudSprite;
+    private ScaledButtonSprite moreBtn;
+    private ScaledButtonSprite soundBtn;
+    private ScaledButtonSprite aboutBtn;
+    private ScaledButtonSprite sceneBtn0;
+    private ScaledButtonSprite sceneBtn1;
 
     public HomeLayer() {
         addBackground("root_bg.png");
@@ -42,60 +44,62 @@ public class HomeLayer extends BaseLayer implements TouchCallbacks {
     }
 
     private void initButtons() {
-        titleSprite = new CCSprite("title.png");
-        titleSprite.setAnchorPoint(0.5F, 1.0F);
-        titleSprite.setPosition(centerHorizontal, (float)(mScreenHeight - 20));
+        titleSprite = ScaledSprite.sprite("title.png");
+        titleSprite.setAnchorPoint(0.5F, 0.5F);
+        titleSprite.setPosition(centerHorizontal, (float)(mScreenHeight * 5 / 6));
         titleAction = CCRepeat.action(CCSequence.actions(
             CCMoveTo.action(2.0F, CGPoint.ccp(titleSprite.getPositionRef().x, titleSprite.getPositionRef().y - 5.0F)),
             CCMoveTo.action(2.0F, CGPoint.ccp(titleSprite.getPositionRef().x, titleSprite.getPositionRef().y + 5.0F))),
             Integer.MAX_VALUE);
         addChild(titleSprite, 1, index++);
 
-        cloudSprite = new CCSprite("cloud.png");
-        cloudSprite.setPosition(centerHorizontal, 157.0F);
+        cloudSprite = ScaledSprite.sprite("cloud.png");
+        cloudSprite.setPosition(centerHorizontal, (float)(mScreenHeight / 6));
         cloudAction = CCRepeat.action(CCSequence.actions(
-            CCMoveTo.action(2.0F, CGPoint.ccp(cloudSprite.getPositionRef().x - 3.0F, cloudSprite.getPositionRef().y)),
-            CCMoveTo.action(2.0F, CGPoint.ccp(cloudSprite.getPositionRef().x + 3.0F, cloudSprite.getPositionRef().y))),
+            CCMoveTo.action(2.0F, CGPoint.ccp(cloudSprite.getPositionRef().x - 5.0F * SCALING, cloudSprite.getPositionRef().y)),
+            CCMoveTo.action(2.0F, CGPoint.ccp(cloudSprite.getPositionRef().x + 5.0F * SCALING, cloudSprite.getPositionRef().y))),
             Integer.MAX_VALUE);
         addChild(cloudSprite, 1, index++);
 
-        float x = centerHorizontal - 20.0F;
-        float y = titleSprite.getPosition().y - titleSprite.getContentSize().height + 40.0F;
+        float x = centerHorizontal - 20.0F * SCALING;
+        float y = titleSprite.getPosition().y - titleSprite.getContentSize().height + 40.0F * SCALING;
 
-        sceneBtn0 = ButtonSprite.create("sceneButton0.png", "sceneButtonHighlight0.png");
+        sceneBtn0 = ScaledButtonSprite.sprite("sceneButton0.png", "sceneButtonHighlight0.png");
         sceneBtn0.setAnchorPoint(1.0F, 1.0F);
         sceneBtn0.setPosition(x, y);
         sceneBtn0Action = CCRepeat.action(CCSequence.actions(
-            CCMoveTo.action(2.0F, CGPoint.ccp(x - 5.0F, y - 5.0F)),
-            CCMoveTo.action(2.0F, CGPoint.ccp(x + 5.0F, y - 5.0F)),
-            CCMoveTo.action(2.0F, CGPoint.ccp(x + 5.0F, y + 5.0F)),
-            CCMoveTo.action(2.0F, CGPoint.ccp(x - 5.0F, y + 5.0F))),
+            CCMoveTo.action(2.0F, CGPoint.ccp(x - 5.0F * SCALING, y - 5.0F * SCALING)),
+            CCMoveTo.action(2.0F, CGPoint.ccp(x + 5.0F * SCALING, y - 5.0F * SCALING)),
+            CCMoveTo.action(2.0F, CGPoint.ccp(x + 5.0F * SCALING, y + 5.0F * SCALING)),
+            CCMoveTo.action(2.0F, CGPoint.ccp(x - 5.0F * SCALING, y + 5.0F * SCALING))),
             Integer.MAX_VALUE);
         addChild(sceneBtn0, 1, index++);
 
         x = centerHorizontal + 20.0F;
-        sceneBtn1 = ButtonSprite.create("sceneButton1.png", "sceneButtonHighlight1.png");
+        sceneBtn1 = ScaledButtonSprite.sprite("sceneButton1.png", "sceneButtonHighlight1.png");
         sceneBtn1.setAnchorPoint(0.0F, 1.0F);
         sceneBtn1.setPosition(x, y);
         sceneBtn1Action = CCRepeat.action(CCSequence.actions(
-            CCMoveTo.action(2.0F, CGPoint.ccp(x + 5.0F, y + 5.0F)),
-            CCMoveTo.action(2.0F, CGPoint.ccp(x - 5.0F, y + 5.0F)),
-            CCMoveTo.action(2.0F, CGPoint.ccp(x - 5.0F, y - 5.0F)),
-            CCMoveTo.action(2.0F, CGPoint.ccp(x + 5.0F, y - 5.0F))),
+            CCMoveTo.action(2.0F, CGPoint.ccp(x + 5.0F * SCALING, y + 5.0F * SCALING)),
+            CCMoveTo.action(2.0F, CGPoint.ccp(x - 5.0F * SCALING, y + 5.0F * SCALING)),
+            CCMoveTo.action(2.0F, CGPoint.ccp(x - 5.0F * SCALING, y - 5.0F * SCALING)),
+            CCMoveTo.action(2.0F, CGPoint.ccp(x + 5.0F * SCALING, y - 5.0F * SCALING))),
             Integer.MAX_VALUE);
         addChild(sceneBtn1, 1, index++);
 
-        moreBtn = ButtonSprite.create("more0.png", "more1.png");
-        moreBtn.setAnchorPoint(0.5F, 1.0F);
-        moreBtn.setPosition(centerHorizontal - 120.0F, moreBtn.getContentSize().height - 5.0F);
-        addChild(moreBtn, 1, index++);
-
-        soundBtn = ButtonSprite.create("sound_sel.png", "sound.png");
-        soundBtn.setPosition(mBackPos);
+        soundBtn = ScaledButtonSprite.sprite("sound_sel.png", "sound.png");
+        soundBtn.setAnchorPoint(0.0f, 0.0f);
+        soundBtn.setPosition(mLeftFuncBtnPos);
         addChild(soundBtn, 1, index++);
 
-        aboutBtn = ButtonSprite.create("about_sel.png", "about.png");
-        aboutBtn.setPosition((float) mScreenWidth - mBackPos.x, mBackPos.y);
+        moreBtn = ScaledButtonSprite.sprite("more0.png", "more1.png");
+        moreBtn.setAnchorPoint(0.5f, 0.0f);
+        moreBtn.setPosition(mMiddleFuncBtnPos);
+        addChild(moreBtn, 1, index++);
+
+        aboutBtn = ScaledButtonSprite.sprite("about_sel.png", "about.png");
+        aboutBtn.setAnchorPoint(1.0f, 0.0f);
+        aboutBtn.setPosition(mRightFuncBtnPos);
         addChild(aboutBtn, 1, index);
     }
 
@@ -108,14 +112,14 @@ public class HomeLayer extends BaseLayer implements TouchCallbacks {
         }
     }
 
-    private ButtonSprite contains(MotionEvent event) {
+    private ScaledButtonSprite contains(MotionEvent event) {
         CGPoint point = new CGPoint();
         CCDirector.sharedDirector().convertToGL(event.getX(), event.getY(), point);
         List<CCNode> nodes = getChildren();
 
         for (CCNode node : nodes) {
-            if (node instanceof ButtonSprite && contains(node, point)) {
-                return (ButtonSprite)node;
+            if (node instanceof ScaledButtonSprite && contains(node, point)) {
+                return (ScaledButtonSprite)node;
             }
         }
         return null;
@@ -132,17 +136,17 @@ public class HomeLayer extends BaseLayer implements TouchCallbacks {
     }
 
     public boolean ccTouchesBegan(MotionEvent event) {
-        ButtonSprite sprite = contains(event);
+        ScaledButtonSprite sprite = contains(event);
         return sprite != null && sprite.ccTouchesBegan(event);
     }
 
     public boolean ccTouchesCancelled(MotionEvent event) {
-        ButtonSprite sprite = contains(event);
+        ScaledButtonSprite sprite = contains(event);
         return sprite != null && sprite.ccTouchesCancelled(event);
     }
 
     public boolean ccTouchesEnded(MotionEvent event) {
-        ButtonSprite sprite = contains(event);
+        ScaledButtonSprite sprite = contains(event);
         if (sprite != null) {
             lastTouched = sprite.getTag();
             return sprite.ccTouchesEnded(event);
@@ -152,7 +156,7 @@ public class HomeLayer extends BaseLayer implements TouchCallbacks {
     }
 
     public boolean ccTouchesMoved(MotionEvent event) {
-        ButtonSprite sprite = contains(event);
+        ScaledButtonSprite sprite = contains(event);
         CCNode node;
         if (sprite != null) {
             int tag = sprite.getTag();
@@ -166,15 +170,15 @@ public class HomeLayer extends BaseLayer implements TouchCallbacks {
 
             node = getChildByTag(lastTouched);
             if (node instanceof ButtonSprite) {
-                ((ButtonSprite)node).normal();
+                ((ScaledButtonSprite)node).normal();
             }
 
             sprite.highlight();
             lastTouched = tag;
         } else {
             node = getChildByTag(lastTouched);
-            if (node instanceof ButtonSprite) {
-                ButtonSprite button = (ButtonSprite)node;
+            if (node instanceof ScaledButtonSprite) {
+                ScaledButtonSprite button = (ScaledButtonSprite)node;
                 if (button == soundBtn) {
                     toggleSound();
                 } else {

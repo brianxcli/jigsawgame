@@ -49,7 +49,7 @@ public class SelectLayer extends BaseLayer implements TouchCallbacks {
         String scene = "scene" + type;
         addBackground(scene + ".png");
         backBtn = ButtonSprite.create("back.png", "back_sel.png");
-        backBtn.setPosition(mBackPos);
+        backBtn.setPosition(mLeftFuncBtnPos);
         addChild(backBtn, 2, BACK_ID);
 
         for (int i = 0; i < ANIMAL_PER_SCENE; i++) {
@@ -62,8 +62,8 @@ public class SelectLayer extends BaseLayer implements TouchCallbacks {
     }
 
     private void calculateAnimalPos() {
-        int totalH = SceneManager.sceneHeight;
-        int totalW = SceneManager.sceneWidth;
+        int totalH = SceneManager.SCREEN_HEIGHT;
+        int totalW = SceneManager.SCREEN_WIDTH;
 
         int secRow = totalH / 4;
         int firstRow = totalH * 2 / 3;
