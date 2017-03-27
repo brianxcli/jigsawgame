@@ -62,7 +62,7 @@ public class HomeLayer extends BaseLayer implements TouchCallbacks {
         addChild(cloudSprite, 1, index++);
 
         float x = centerHorizontal - 20.0F * SCALING;
-        float y = titleSprite.getPosition().y - titleSprite.getContentSize().height + 40.0F * SCALING;
+        float y = titleSprite.getPosition().y - titleSprite.getContentSize().height + 15.0F * SCALING;
 
         sceneBtn0 = ScaledButtonSprite.sprite("sceneButton0.png", "sceneButtonHighlight0.png");
         sceneBtn0.setAnchorPoint(1.0F, 1.0F);
@@ -93,7 +93,7 @@ public class HomeLayer extends BaseLayer implements TouchCallbacks {
         addChild(soundBtn, 1, index++);
 
         moreBtn = ScaledButtonSprite.sprite("more0.png", "more1.png");
-        moreBtn.setAnchorPoint(0.5f, 0.0f);
+        moreBtn.setAnchorPoint(0.5f, 0.3f);
         moreBtn.setPosition(mMiddleFuncBtnPos);
         addChild(moreBtn, 1, index++);
 
