@@ -132,8 +132,6 @@ public class LaunchActivity extends Activity implements OnClickListener {
     private static class OrientationDetector extends OrientationEventListener {
         private CCDirector mDirector;
         private int mOrientation = Surface.ROTATION_0;
-        private boolean mClockwise = true;
-        private int mLast = 0;
         private int mRotateTo = 0;
         private CGPoint mAnchor;
 
@@ -147,19 +145,9 @@ public class LaunchActivity extends Activity implements OnClickListener {
             if (240 <= orientation && orientation <= 300 && mOrientation == Surface.ROTATION_180) {
                 mOrientation = Surface.ROTATION_0;
                 mRotateTo = 0;
-                if (0 <= orientation && orientation <= 60) {
-                    mClockwise = false;
-                } else if (orientation >= 300) {
-                    mClockwise = true;
-                }
             } else if (60 <= orientation && orientation <= 120 && mOrientation == Surface.ROTATION_0) {
                 mOrientation = Surface.ROTATION_180;
                 mRotateTo = 180;
-                if (120 <= orientation && orientation <= 180) {
-                    mClockwise = true;
-                } else if (180 < orientation && orientation <= 210) {
-                    mClockwise = false;
-                }
             }
 
             CCScene scene = mDirector.getRunningScene();
