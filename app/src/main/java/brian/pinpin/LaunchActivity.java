@@ -3,6 +3,7 @@ package brian.pinpin;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,6 @@ import android.widget.Button;
 import brian.pinpin.scenes.PlayScene;
 import org.cocos2d.layers.CCScene;
 import org.cocos2d.nodes.CCDirector;
-import org.cocos2d.nodes.CCNode;
 import org.cocos2d.opengl.CCGLSurfaceView;
 
 import brian.pinpin.managers.ManagerService;
@@ -61,9 +61,8 @@ public class LaunchActivity extends Activity implements OnClickListener {
         getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
         getWindow().setFlags(LayoutParams.FLAG_KEEP_SCREEN_ON, LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        Display display = getWindowManager().getDefaultDisplay();
-        SceneManager.sceneWidth = display.getWidth();
-        SceneManager.sceneHeight = display.getHeight();
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        mSceneManager.setScreenParams(metrics.widthPixels, metrics.heightPixels, metrics.density);
 
         CCGLSurfaceView surfaceView = new CCGLSurfaceView(this);
         setContentView(surfaceView);

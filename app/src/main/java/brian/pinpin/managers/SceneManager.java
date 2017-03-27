@@ -19,11 +19,26 @@ public class SceneManager implements IService {
     public static final int SCENE_ABOUT = 5;
     public static final int SCENE_MORE = 6;
 
-    public static int sceneWidth;
-    public static int sceneHeight;
+    public static int SCREEN_WIDTH;
+    public static int SCREEN_HEIGHT;
 
-    SceneManager() {
+    private static float BASE_SCREEN_DENSITY = 2.0f;
+    private static float DENSITY;
+    private static float SCALING_FACTOR;
 
+    public void setScreenParams(int width, int height, float density) {
+        SCREEN_WIDTH = width;
+        SCREEN_HEIGHT = height;
+        DENSITY = density;
+        if (DENSITY == BASE_SCREEN_DENSITY) {
+            SCALING_FACTOR = 1.0f;
+        } else {
+            SCALING_FACTOR = DENSITY / BASE_SCREEN_DENSITY;
+        }
+    }
+
+    public float getScalingFactor() {
+        return SCALING_FACTOR;
     }
 
     public CCScene getScene(int scene) {
