@@ -5,6 +5,8 @@ import android.view.MotionEvent;
 import brian.pinpin.R;
 import brian.pinpin.nodes.ButtonSprite;
 import brian.pinpin.events.TouchCallbacks;
+import brian.pinpin.nodes.ScaledButtonSprite;
+import brian.pinpin.nodes.ScaledSprite;
 import brian.pinpin.scenes.IBaseScene;
 import brian.pinpin.utils.PublicUtils;
 
@@ -37,14 +39,14 @@ public class PlayLayer extends BaseLayer implements TouchCallbacks {
     private int mSide;
     private int mNumber;
 
-    private CCSprite mBlackboard;
-    private ButtonSprite mMagicWand;
-    private CCSprite[] mStars;
-    private CCSprite[] mTrialIcons;
-    private CCSprite mOriginalBig;
-    private CCSprite mOriginIcon;
-    private CCSprite mGrayBg;
-    private ButtonSprite mMagnifier;
+    private ScaledSprite mBlackboard;
+    private ScaledButtonSprite mMagicWand;
+    private ScaledSprite[] mStars;
+    private ScaledSprite[] mTrialIcons;
+    private ScaledSprite mOriginalBig;
+    private ScaledSprite mOriginIcon;
+    private ScaledSprite mGrayBg;
+    private ScaledButtonSprite mMagnifier;
 
     private CGPoint mBlackboardPos;
     private CGPoint[] mStarPos;
@@ -55,9 +57,9 @@ public class PlayLayer extends BaseLayer implements TouchCallbacks {
 
     private CCAction mMagicWandAction;
     private int[][] mFragmentIDs;
-    private CCSprite[][] mFragments;
+    private ScaledSprite[][] mFragments;
 
-    private ButtonSprite mLastButton;
+    private ScaledButtonSprite mLastButton;
     private int U;
     private int V;
 
@@ -109,26 +111,23 @@ public class PlayLayer extends BaseLayer implements TouchCallbacks {
     private void initUI() {
         addBackground("scenebg.png");
 
-        mGrayBg = CCSprite.sprite("gray.png");
+        mGrayBg = ScaledSprite.sprite("gray.png");
         mGrayBg.setAnchorPoint(0.0F, 0.0F);
         mGrayBg.setVisible(false);
 
-        mBlackboard = CCSprite.sprite("blackboard.png");
+        mBlackboard = ScaledSprite.sprite("blackboard.png");
         mBlackboard.setAnchorPoint(1.0F, 0.0F);
-        mBlackboardPos = CGPoint.ccp(mScreenWidth - 80, 20.0F);
+        mBlackboardPos = CGPoint.ccp(mScreenWidth - 80 * SCALING, 20.0F * SCALING);
         mBlackboard.setPosition(mBlackboardPos);
 
-        mMagicWand = ButtonSprite.create("magic.png", "magicHighlight.png");
+        mMagicWand = ScaledButtonSprite.sprite("magic.png", "magicHighlight.png");
         mMagicWand.setAnchorPoint(1.0F, 0.0F);
-        CGPoint magicWandPos = CGPoint.ccp(mBlackboardPos.x + 60.0F, mBlackboardPos.y - 20.0F);
+        CGPoint magicWandPos = CGPoint.ccp(mBlackboardPos.x + 60.0F * SCALING, mBlackboardPos.y - 20.0F * SCALING);
         mMagicWand.setPosition(magicWandPos);
 
-        CGPoint var2 = CGPoint.ccp(magicWandPos.x - 3.0F, magicWandPos.y + 3.0F);
-        CGPoint var3 = CGPoint.ccp(magicWandPos.x + 3.0F, magicWandPos.y - 3.0F);
+        CGPoint var2 = CGPoint.ccp(magicWandPos.x - 6.0F * SCALING, magicWandPos.y + 6.0F * SCALING);
+        CGPoint var3 = CGPoint.ccp(magicWandPos.x + 6.0F * SCALING, magicWandPos.y - 6.0F * SCALING);
         mMagicWandAction = CCRepeat.action(CCSequence.actions(CCMoveTo.action(2.0F, var2), CCMoveTo.action(2.0F, var3)), Integer.MAX_VALUE);
-
-        backBtn = ButtonSprite.create("back.png", "back_sel.png");
-        backBtn.setPosition(mLeftFuncBtnPos);
 
         addChild(backBtn, 1, BACK_ID);
         addChild(mBlackboard, 1, TAG_BLACKBOARD);
@@ -302,23 +301,23 @@ public class PlayLayer extends BaseLayer implements TouchCallbacks {
     private void initTrialIconSprites() {
         // At most 4 trials for each animal
         CGPoint[] trialPos = new CGPoint[4];
-        float top = mScreenHeight - 80;
-        trialPos[0] = CGPoint.ccp(120.0F, top);
-        trialPos[1] = CGPoint.ccp(120.0F, top - 110.0F);
-        trialPos[2] = CGPoint.ccp(140 + 120.0F, top - 20);
-        trialPos[3] = CGPoint.ccp(140 + 120.0F, top - 20 - 110.0F);
+        float top = mScreenHeight - 100 * SCALING;
+        trialPos[0] = CGPoint.ccp(120.0F * SCALING, top);
+        trialPos[1] = CGPoint.ccp(120.0F * SCALING, top - 110.0F * SCALING);
+        trialPos[2] = CGPoint.ccp(260F * SCALING, top - 20 * SCALING);
+        trialPos[3] = CGPoint.ccp(260F * SCALING, top - 130.0F * SCALING);
 
         int trials = mTrialsNums[mSide][mNumber];
-        mTrialIcons = new CCSprite[trials];
+        mTrialIcons = new ScaledSprite[trials];
 
         for (int i = 0; i < trials; i++) {
             if (i <= passedNum) {
-                mTrialIcons[i] = ButtonSprite.create(mStageIconRes[i][0], mStageIconRes[i][1]);
+                mTrialIcons[i] = ScaledButtonSprite.sprite(mStageIconRes[i][0], mStageIconRes[i][1]);
                 mTrialIcons[i].setPosition(trialPos[i]);
-                ((ButtonSprite)mTrialIcons[i]).addCallback(this);
+                ((ScaledButtonSprite)mTrialIcons[i]).addCallback(this);
                 addChild(mTrialIcons[i], 0, TAG_TRIAL_ICONS[i]);
             } else {
-                mTrialIcons[i] = CCSprite.sprite("lock.png");
+                mTrialIcons[i] = ScaledSprite.sprite("lock.png");
                 mTrialIcons[i].setPosition(trialPos[i]);
                 addChild(mTrialIcons[i], 0, TAG_TRIAL_ICONS[i]);
             }
@@ -326,21 +325,21 @@ public class PlayLayer extends BaseLayer implements TouchCallbacks {
     }
 
     private void initOriginIcon() {
-        mMagnifier = ButtonSprite.create("originalButton.png", "originalButtonHighlight.png");
+        mMagnifier = ScaledButtonSprite.sprite("originalButton.png", "originalButtonHighlight.png");
         mMagnifier.setAnchorPoint(1.0F, 0.0F);
-        CGPoint magnifierPos = CGPoint.ccp(mBlackboardPos.x - mBlackboard.getContentSize().getWidth() - 20, mBlackboardPos.y);
+        CGPoint magnifierPos = CGPoint.ccp(mBlackboardPos.x - (mBlackboard.getContentSize().getWidth() + 20) * SCALING, mBlackboardPos.y);
         mMagnifier.setPosition(magnifierPos);
 
-        mOriginalBig = CCSprite.sprite(mOriginPics[mCurrentTrial - 1][0]);
+        mOriginalBig = ScaledSprite.sprite(mOriginPics[mCurrentTrial - 1][0]);
         mOriginalBig.setAnchorPoint(1.0F, 0.0F);
-        mOriginalBigPos = CGPoint.ccp(mBlackboard.getPosition().x - 50, mBlackboard.getPosition().y + 80);
+        mOriginalBigPos = CGPoint.ccp(mBlackboard.getPosition().x - 50 * SCALING, mBlackboard.getPosition().y + 80 * SCALING);
         mOriginalBig.setPosition(mOriginalBigPos);
         mOriginalBig.setVisible(false);
 
-        mOriginIcon = CCSprite.sprite(mOriginPics[mCurrentTrial - 1][1]);
+        mOriginIcon = ScaledSprite.sprite(mOriginPics[mCurrentTrial - 1][1]);
         mOriginIcon.setAnchorPoint(0.5F, 0.5F);
-        CGPoint originIconPos = CGPoint.ccp(magnifierPos.x - mMagnifier.getContentSize().getWidth() / 2 + 10.0F,
-                magnifierPos.y + mMagnifier.getContentSize().getHeight() / 2 + 20.0F);
+        CGPoint originIconPos = CGPoint.ccp(magnifierPos.x - mMagnifier.getContentSize().getWidth() * SCALING / 2 + 10.0F * SCALING,
+                magnifierPos.y + mMagnifier.getContentSize().getHeight() * SCALING / 2 + 20.0F * SCALING);
         mOriginIcon.setPosition(originIconPos);
 
         addChild(mMagnifier, 1, TAG_MAGNIFIER);
@@ -352,13 +351,13 @@ public class PlayLayer extends BaseLayer implements TouchCallbacks {
         initStarPositions();
 
         int difficulty = getDifficulty(mCurrentTrial);
-        mStars = new CCSprite[3];
+        mStars = new ScaledSprite[3];
         for (int i = 0; i < 3; ++i) {
             if(i < difficulty) {
-                mStars[i] = CCSprite.sprite("starHighlight.png");
+                mStars[i] = ScaledSprite.sprite("starHighlight.png");
                 mStars[i].setPosition(mStarPos[i]);
             } else {
-                mStars[i] = CCSprite.sprite("star.png");
+                mStars[i] = ScaledSprite.sprite("star.png");
                 mStars[i].setPosition(mStarPos[i]);
             }
 
@@ -368,13 +367,13 @@ public class PlayLayer extends BaseLayer implements TouchCallbacks {
 
     private void initStarPositions() {
         float var1 = mBlackboardPos.x;
-        float var2 = mBlackboard.getContentSize().width / 2.0F;
+        float var2 = mBlackboard.getContentSize().width * SCALING / 2.0F;
         float var3 = mBlackboardPos.y;
-        float var4 = mBlackboard.getContentSize().height;
+        float var4 = mBlackboard.getContentSize().height * SCALING;
         mStarPos = new CGPoint[3];
 
         for (int i = 0; i < 3; i++) {
-            mStarPos[i] = CGPoint.ccp((float)(i * 90) + (var1 - var2 - 90.0F), var3 + var4 - 80.0F);
+            mStarPos[i] = CGPoint.ccp(i * 90 * SCALING + (var1 - var2 - 90.0F * SCALING), var3 + var4 - 80.0F * SCALING);
         }
     }
 
@@ -447,12 +446,12 @@ public class PlayLayer extends BaseLayer implements TouchCallbacks {
 
     public void addFragments() {
         int split = getSplitByStage(mCurrentTrial);
-        mFragments = new CCSprite[split][split];
+        mFragments = new ScaledSprite[split][split];
         mFragmentIDs = new int[split][split];
 
         CGSize size = mOriginalBig.getContentSize();
-        float w = size.getWidth();
-        float h = size.getHeight();
+        float w = size.getWidth() * SCALING;
+        float h = size.getHeight() * SCALING;
         float blockW = w / split;
         float blockH = h / split;
 
@@ -466,12 +465,12 @@ public class PlayLayer extends BaseLayer implements TouchCallbacks {
         float half = interval / 2.0F;
 
         // to save randomized fragments and their ids
-        CCSprite[][] ranFrags = new CCSprite[split][split];
+        ScaledSprite[][] ranFrags = new ScaledSprite[split][split];
 
         int tag = TAG_STARS[TAG_STARS.length - 1] + 1;
         for (int i = 0; i < split; i++) {
             for (int j = 0; j < split; j++) {
-                CCSprite sprite = mFragments[randomRow[i]][randomCol[j]];
+                ScaledSprite sprite = mFragments[randomRow[i]][randomCol[j]];
                 ranFrags[i][j] = sprite;
                 mFragmentIDs[i][j] = randomRow[i] * split + randomCol[j];
 
@@ -508,21 +507,21 @@ public class PlayLayer extends BaseLayer implements TouchCallbacks {
         mLastFragment.runAction(CCSequence.actions(
                 CCMoveTo.action(0.5F, mFragments[tarIdxX][tarIdxY].getPosition()),
                 CCCallFunc.action(this, "playSwapEffect"),
-                CCScaleTo.action(0.2F, 1.25F),
-                CCScaleTo.action(0.2F, 1.0F)));
+                CCScaleTo.action(0.2F, SCALING * 1.5f),
+                CCScaleTo.action(0.2F, SCALING)));
 
         mSwitchTarget = mFragments[tarIdxX][tarIdxY];
         reorderChild(mSwitchTarget, 3);
         mSwitchTarget.runAction(CCSequence.actions(
                 CCMoveTo.action(0.5F, mLastFragmentPos),
-                CCScaleTo.action(0.2F, 1.25F),
-                CCScaleTo.action(0.2F, 1.0F),
+                CCScaleTo.action(0.2F, SCALING * 1.5f),
+                CCScaleTo.action(0.2F, SCALING),
                 CCCallFunc.action(this, "endActions"),
                 CCCallFunc.action(this, "checkComplete"),
                 CCCallFunc.action(this, "setTouchIdle")));
 
         // swap fragment instances
-        CCSprite tempFrag = mFragments[oriIdxX][oriIdxY];
+        ScaledSprite tempFrag = mFragments[oriIdxX][oriIdxY];
         mFragments[oriIdxX][oriIdxY] = mFragments[tarIdxX][tarIdxY];
         mFragments[tarIdxX][tarIdxY] = tempFrag;
     }
@@ -540,14 +539,14 @@ public class PlayLayer extends BaseLayer implements TouchCallbacks {
             return true;
         } else {
             CCNode elem = getVisibleEventButton(event);
-            if (elem instanceof ButtonSprite) {
-                mLastButton = (ButtonSprite)elem;
+            if (elem instanceof ScaledButtonSprite) {
+                mLastButton = (ScaledButtonSprite)elem;
                 return mLastButton.ccTouchesBegan(event);
             }
 
-            if (elem instanceof CCSprite) {
-                if (isFragment((CCSprite)elem)) {
-                    mLastFragment = (CCSprite)elem;
+            if (elem instanceof ScaledSprite) {
+                if (isFragment((ScaledSprite)elem)) {
+                    mLastFragment = (ScaledSprite)elem;
                     U = mLastFragmentX;
                     V = mLastFragmentY;
                     reorderChild(mLastFragment, 3);
@@ -608,7 +607,7 @@ public class PlayLayer extends BaseLayer implements TouchCallbacks {
         }
 
         CCNode node = getVisibleEventButton(event);
-        return node instanceof ButtonSprite && ((ButtonSprite)node).ccTouchesCancelled(event);
+        return node instanceof ScaledButtonSprite && ((ScaledButtonSprite)node).ccTouchesCancelled(event);
     }
 
     public boolean ccTouchesEnded(MotionEvent event) {
@@ -631,21 +630,21 @@ public class PlayLayer extends BaseLayer implements TouchCallbacks {
 
         // the last node that contains the event
         CCNode target = getVisibleEventButton(event);
-        if (target instanceof ButtonSprite && mLastFragment == null) {
+        if (target instanceof ScaledButtonSprite && mLastFragment == null) {
             if (mLastButton != null) {
                 mLastButton = null;
             }
             mLastPointerId = -1;
-            return ((ButtonSprite)target).ccTouchesEnded(event);
+            return ((ScaledButtonSprite)target).ccTouchesEnded(event);
         }
 
-        if (target instanceof CCSprite) {
+        if (target instanceof ScaledSprite) {
             if (mLastFragment == null) {
                 mLastPointerId = -1;
                 return true;
             }
 
-            CCSprite sprite = (CCSprite)target;
+            ScaledSprite sprite = (ScaledSprite)target;
             if (isSwappableFragment(sprite)) {
                 CGPoint curPos = mLastFragment.getPosition();
                 if (this.contains(sprite, curPos)) {
@@ -771,8 +770,8 @@ public class PlayLayer extends BaseLayer implements TouchCallbacks {
         if (mTrialIcons != null) {
             int length = mTrialIcons.length;
             for (int i = 0; i < length; ++i) {
-                if (mTrialIcons[i] instanceof ButtonSprite) {
-                    ((ButtonSprite)mTrialIcons[i]).removeCallBack();
+                if (mTrialIcons[i] instanceof ScaledButtonSprite) {
+                    ((ScaledButtonSprite)mTrialIcons[i]).removeCallBack();
                 }
 
                 removeChild(mTrialIcons[i], true);

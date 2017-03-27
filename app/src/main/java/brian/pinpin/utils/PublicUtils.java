@@ -10,8 +10,10 @@ import org.cocos2d.types.CGSize;
 
 import java.io.IOException;
 
+import brian.pinpin.nodes.ScaledSprite;
+
 public class PublicUtils {
-    public static void splitPicture(String res, int split, CCSprite[][] sprites, int[][] ids) {
+    public static void splitPicture(String res, int split, ScaledSprite[][] sprites, int[][] ids) {
         if (sprites == null || ids == null) {
             return;
         }
@@ -31,7 +33,7 @@ public class PublicUtils {
             for (int i = 0; i < split; i++) {
                 for (int j = 0; j < split; j++) {
                     Bitmap bm = Bitmap.createBitmap(bitmap, (int)(i * blockW), (int)(j * blockH), (int)blockW, (int)blockH);
-                    sprites[i][j] = CCSprite.sprite(bm, res + '|' + id);
+                    sprites[i][j] = ScaledSprite.sprite(bm, res + '|' + id);
                     ids[i][j] = id++;
                     bm.recycle();
                     bm = null;

@@ -7,6 +7,8 @@ import brian.pinpin.managers.SoundManager;
 import brian.pinpin.managers.SceneManager;
 import brian.pinpin.managers.SaveManager;
 import brian.pinpin.nodes.ButtonSprite;
+import brian.pinpin.nodes.ScaledButtonSprite;
+
 import org.cocos2d.layers.CCLayer;
 import org.cocos2d.nodes.CCDirector;
 import org.cocos2d.nodes.CCNode;
@@ -20,7 +22,7 @@ class BaseLayer extends CCLayer {
     static final int BACK_ID = -2;
 
     CCSprite mBackground;
-    ButtonSprite backBtn;
+    ScaledButtonSprite backBtn;
     CGPoint mLeftFuncBtnPos;
     CGPoint mRightFuncBtnPos;
     CGPoint mMiddleFuncBtnPos;
@@ -42,6 +44,13 @@ class BaseLayer extends CCLayer {
         mLeftFuncBtnPos = CGPoint.make(30.0F * SCALING, 30.0F * SCALING);
         mMiddleFuncBtnPos = CGPoint.make(centerHorizontal, 30.0F * SCALING);
         mRightFuncBtnPos = CGPoint.make(mScreenWidth - 30.0F * SCALING, 30.0F * SCALING);
+        initBackBtn();
+    }
+
+    private void initBackBtn() {
+        backBtn = ScaledButtonSprite.sprite("back.png", "back_sel.png");
+        backBtn.setAnchorPoint(0.0f, 0.0f);
+        backBtn.setPosition(mLeftFuncBtnPos);
     }
 
     void addBackground(String res) {

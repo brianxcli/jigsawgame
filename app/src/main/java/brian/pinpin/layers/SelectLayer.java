@@ -6,6 +6,7 @@ import brian.pinpin.R;
 import brian.pinpin.managers.SceneManager;
 import brian.pinpin.nodes.ButtonSprite;
 import brian.pinpin.events.TouchCallbacks;
+import brian.pinpin.nodes.ScaledButtonSprite;
 import brian.pinpin.scenes.PlayScene;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import org.cocos2d.transitions.CCShrinkGrowTransition;
 public class SelectLayer extends BaseLayer implements TouchCallbacks {
     private static final int ANIMAL_PER_SCENE = 7;
 
-    private ButtonSprite[] mTrials = new ButtonSprite[ANIMAL_PER_SCENE];
+    private ScaledButtonSprite[] mTrials = new ScaledButtonSprite[ANIMAL_PER_SCENE];
     private int mType = -1;
 
     public SelectLayer(int type) {
@@ -27,14 +28,14 @@ public class SelectLayer extends BaseLayer implements TouchCallbacks {
         playBgMusic();
     }
 
-    private ButtonSprite findSprite(MotionEvent event) {
+    private ScaledButtonSprite findSprite(MotionEvent event) {
         CGPoint point = new CGPoint();
         CCDirector.sharedDirector().convertToGL(event.getX(), event.getY(), point);
 
         List<CCNode> children = getChildren();
         for (CCNode node : children) {
-            if(node != null && node instanceof ButtonSprite && contains(node, point)) {
-                return (ButtonSprite)node;
+            if(node != null && node instanceof ScaledButtonSprite && contains(node, point)) {
+                return (ScaledButtonSprite)node;
             }
         }
 
@@ -48,12 +49,10 @@ public class SelectLayer extends BaseLayer implements TouchCallbacks {
     private void initViews(int type) {
         String scene = "scene" + type;
         addBackground(scene + ".png");
-        backBtn = ButtonSprite.create("back.png", "back_sel.png");
-        backBtn.setPosition(mLeftFuncBtnPos);
         addChild(backBtn, 2, BACK_ID);
 
         for (int i = 0; i < ANIMAL_PER_SCENE; i++) {
-            mTrials[i] = ButtonSprite.create(scene + "Play" + i + ".png", scene + "PlayHighlight" + i + ".png");
+            mTrials[i] = ScaledButtonSprite.sprite(scene + "Play" + i + ".png", scene + "PlayHighlight" + i + ".png");
             mTrials[i].setAnchorPoint(0.5f, 0.5f);
             addChild(mTrials[i], 1, i);
         }
@@ -90,22 +89,22 @@ public class SelectLayer extends BaseLayer implements TouchCallbacks {
     }
 
     public boolean ccTouchesBegan(MotionEvent event) {
-        ButtonSprite button = findSprite(event);
+        ScaledButtonSprite button = findSprite(event);
         return button != null && button.ccTouchesBegan(event);
     }
 
     public boolean ccTouchesCancelled(MotionEvent event) {
-        ButtonSprite button = findSprite(event);
+        ScaledButtonSprite button = findSprite(event);
         return button != null && button.ccTouchesCancelled(event);
     }
 
     public boolean ccTouchesEnded(MotionEvent event) {
-        ButtonSprite button = findSprite(event);
+        ScaledButtonSprite button = findSprite(event);
         return button != null && button.ccTouchesEnded(event);
     }
 
     public boolean ccTouchesMoved(MotionEvent event) {
-        ButtonSprite button = findSprite(event);
+        ScaledButtonSprite button = findSprite(event);
         return button != null && button.ccTouchesMoved(event);
     }
 

@@ -5,6 +5,7 @@ import android.view.MotionEvent;
 import brian.pinpin.R;
 import brian.pinpin.events.TouchCallbacks;
 import brian.pinpin.nodes.ButtonSprite;
+import brian.pinpin.nodes.ScaledButtonSprite;
 import brian.pinpin.scenes.IBaseScene;
 
 import org.cocos2d.events.CCTouchDispatcher;
@@ -14,8 +15,6 @@ import org.cocos2d.types.CGPoint;
 public class AboutLayer extends BaseLayer implements TouchCallbacks {
     public AboutLayer() {
         addBackground("about_bg.png");
-        backBtn = ButtonSprite.create("back.png", "back_sel.png");
-        backBtn.setPosition(mLeftFuncBtnPos);
         addChild(backBtn, 1, BACK_ID);
     }
 
