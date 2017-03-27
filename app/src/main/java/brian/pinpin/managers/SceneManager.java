@@ -41,16 +41,16 @@ public class SceneManager implements IService {
         return SCALING_FACTOR;
     }
 
-    public CCScene getScene(int scene) {
+    public CCScene getScene(int scene, int... params) {
         switch (scene) {
             case SCENE_FLASH:
                 return FlashScene.create();
             case SCENE_HOME:
                 return HomeScene.create();
             case SCENE_SELECT:
-                return SelectScene.create();
+                return SelectScene.create(params);
             case SCENE_PLAY:
-                return PlayScene.create();
+                return PlayScene.create(params);
             case SCENE_ABOUT:
                 return AboutScene.create();
             case SCENE_MORE:

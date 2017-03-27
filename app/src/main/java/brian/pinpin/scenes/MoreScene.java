@@ -1,20 +1,21 @@
 package brian.pinpin.scenes;
 
+import brian.pinpin.layers.BaseLayer;
 import brian.pinpin.layers.MoreLayer;
 import brian.pinpin.managers.SceneManager;
 
 import org.cocos2d.layers.CCScene;
 
-public class MoreScene extends CCScene implements IBaseScene {
-    private MoreScene() {
-        addChild(new MoreLayer(), SceneManager.Z_ORDER_LAYER, SceneManager.TAG_LAYER);
+public class MoreScene extends BaseScene {
+    private MoreScene(int... params) {
+        super(params);
     }
 
-    public static MoreScene create() {
-        return new MoreScene();
+    public static MoreScene create(int... params) {
+        return new MoreScene(params);
     }
 
-    public void cleanupScene() {
-        // removeSelf();
+    public BaseLayer createLayer(int... params) {
+        return new MoreLayer();
     }
 }

@@ -206,8 +206,7 @@ public class SelectLayer extends BaseLayer implements TouchCallbacks {
             CCDirector.sharedDirector().popScene();
             return true;
         } else if (mTrials[0].getTag() <= tag && tag <= mTrials[ANIMAL_PER_SCENE - 1].getTag()) {
-            PlayScene scene = (PlayScene)mSceneManager.getScene(SceneManager.SCENE_PLAY);
-            scene.setPlayLayer(mType, tag);
+            PlayScene scene = (PlayScene)mSceneManager.getScene(SceneManager.SCENE_PLAY, mType, tag);
             CCDirector.sharedDirector().pushScene(CCShrinkGrowTransition.transition(1.0F, scene));
             return true;
         } else {

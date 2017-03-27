@@ -1,20 +1,18 @@
 package brian.pinpin.scenes;
 
 import brian.pinpin.layers.AboutLayer;
-import brian.pinpin.managers.SceneManager;
+import brian.pinpin.layers.BaseLayer;
 
-import org.cocos2d.layers.CCScene;
-
-public class AboutScene extends CCScene implements IBaseScene {
-    private AboutScene() {
-        addChild(new AboutLayer(), SceneManager.Z_ORDER_LAYER, SceneManager.TAG_LAYER);
+public class AboutScene extends BaseScene {
+    private AboutScene(int... params) {
+        super(params);
     }
 
-    public static AboutScene create() {
-        return new AboutScene();
+    public BaseLayer createLayer(int... params) {
+        return new AboutLayer();
     }
 
-    public void cleanupScene() {
-        //  removeSelf();
+    public static AboutScene create(int... params) {
+        return new AboutScene(params);
     }
 }

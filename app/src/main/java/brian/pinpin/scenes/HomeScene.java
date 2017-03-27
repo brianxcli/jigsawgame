@@ -1,20 +1,21 @@
 package brian.pinpin.scenes;
 
+import brian.pinpin.layers.BaseLayer;
 import brian.pinpin.layers.HomeLayer;
 import brian.pinpin.managers.SceneManager;
 
 import org.cocos2d.layers.CCScene;
 
-public class HomeScene extends CCScene implements IBaseScene {
-    private HomeScene() {
-        addChild(new HomeLayer(), SceneManager.Z_ORDER_LAYER, SceneManager.TAG_LAYER);
+public class HomeScene extends BaseScene {
+    private HomeScene(int... params) {
+        super(params);
     }
 
-    public static HomeScene create() {
-        return new HomeScene();
+    public BaseLayer createLayer(int... params) {
+        return new HomeLayer();
     }
 
-    public void cleanupScene() {
-        // removeSelf();
+    public static HomeScene create(int... params) {
+        return new HomeScene(params);
     }
 }

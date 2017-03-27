@@ -242,14 +242,12 @@ public class HomeLayer extends BaseLayer implements TouchCallbacks {
             mSoundManager.playEffect(mContext, R.raw.sound_ui_switch);
             return true;
         } else if (tag == sceneBtn0.getTag()) {
-            CCScene scene = mSceneManager.getScene(SceneManager.SCENE_SELECT);
-            ((SelectScene)scene).setSide(0);
+            CCScene scene = mSceneManager.getScene(SceneManager.SCENE_SELECT, 0);
             CCDirector.sharedDirector().pushScene(CCShrinkGrowTransition.transition(1.0F, scene));
             mSoundManager.playEffect(mContext, R.raw.sound_ui_switch);
             return true;
         } else if (tag == sceneBtn1.getTag()) {
-            CCScene scene = mSceneManager.getScene(SceneManager.SCENE_SELECT);
-            ((SelectScene) scene).setSide(1);
+            CCScene scene = mSceneManager.getScene(SceneManager.SCENE_SELECT, 1);
             CCDirector.sharedDirector().pushScene(CCShrinkGrowTransition.transition(1.0F, scene));
             mSoundManager.playEffect(mContext, R.raw.sound_ui_switch);
             return true;

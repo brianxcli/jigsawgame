@@ -17,7 +17,7 @@ import org.cocos2d.types.CGPoint;
 import org.cocos2d.types.CGRect;
 import org.cocos2d.types.CGSize;
 
-class BaseLayer extends CCLayer {
+public class BaseLayer extends CCLayer {
     protected static float SCALING;
     static final int BACK_ID = -2;
 
@@ -34,6 +34,9 @@ class BaseLayer extends CCLayer {
     int mScreenWidth;
     int mScreenHeight;
     float centerHorizontal;
+
+    private float mScaleX;
+    private float mScaleY;
 
     BaseLayer() {
         mSaveManager.setContext(mContext);
@@ -53,13 +56,23 @@ class BaseLayer extends CCLayer {
         backBtn.setPosition(mLeftFuncBtnPos);
     }
 
+    public float getBackgroundScaleX() {
+        return mScaleX;
+    }
+
+    public float getBackgroundScaleY() {
+        return mScaleY;
+    }
+
     void addBackground(String res) {
         mBackground = new CCSprite(res);
         mBackground.setAnchorPoint(0.0F, 0.0F);
         mBackground.setPosition(0.0F, 0.0F);
         CGSize size = mBackground.getContentSize();
-        mBackground.setScaleX(mScreenWidth / size.getWidth());
-        mBackground.setScaleY(mScreenHeight / size.getHeight());
+        mScaleX = mScreenWidth / size.getWidth();
+        mScaleY = mScreenHeight / size.getHeight();
+        mBackground.setScaleX(mScaleX);
+        mBackground.setScaleY(mScaleY);
         addChild(mBackground);
     }
 
