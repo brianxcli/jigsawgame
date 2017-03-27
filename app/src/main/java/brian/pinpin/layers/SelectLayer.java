@@ -6,7 +6,6 @@ import brian.pinpin.R;
 import brian.pinpin.managers.SceneManager;
 import brian.pinpin.nodes.ButtonSprite;
 import brian.pinpin.events.TouchCallbacks;
-import brian.pinpin.scenes.IBaseScene;
 import brian.pinpin.scenes.PlayScene;
 
 import java.util.List;
@@ -55,16 +54,27 @@ public class SelectLayer extends BaseLayer implements TouchCallbacks {
 
         for (int i = 0; i < ANIMAL_PER_SCENE; i++) {
             mTrials[i] = ButtonSprite.create(scene + "Play" + i + ".png", scene + "PlayHighlight" + i + ".png");
+            mTrials[i].setAnchorPoint(0.5f, 0.5f);
             addChild(mTrials[i], 1, i);
         }
 
-        mTrials[0].setPosition(150F, 430.0F);
-        mTrials[1].setPosition(315.0F, 459F);
-        mTrials[2].setPosition(570F, 375F);
-        mTrials[3].setPosition(855.0F, 415F);
-        mTrials[4].setPosition(280F, 180F);
-        mTrials[5].setPosition(560F, 120F);
-        mTrials[6].setPosition(845F, 155F);
+        calculateAnimalPos();
+    }
+
+    private void calculateAnimalPos() {
+        int totalH = SceneManager.sceneHeight;
+        int totalW = SceneManager.sceneWidth;
+
+        int secRow = totalH / 4;
+        int firstRow = totalH * 2 / 3;
+
+        mTrials[0].setPosition(totalW / 5, firstRow);
+        mTrials[1].setPosition(totalW * 2 / 5, firstRow);
+        mTrials[2].setPosition(totalW * 3 / 5, firstRow);
+        mTrials[3].setPosition(totalW * 4 / 5, firstRow);
+        mTrials[4].setPosition(totalW / 4, secRow);
+        mTrials[5].setPosition(totalW / 2, secRow);
+        mTrials[6].setPosition(totalW * 3 / 4, secRow);
     }
 
     private void addAnimalCallbacks() {
